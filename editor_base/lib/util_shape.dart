@@ -7,6 +7,7 @@ class Shape {
   Color brushColor = Colors.black;
   double brushSize = 20;
   double rotation = 0;
+  bool isSelected = false;
   List<Offset> points = [];
 
   Shape();
@@ -18,6 +19,10 @@ class Shape {
 
   void setPosition(Offset newPosition) {
     position = newPosition;
+  }
+
+  void setIsSelected(bool isSelected) {
+    this.isSelected = isSelected;
   }
 
   void setScale(Size newScale) {

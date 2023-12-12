@@ -94,7 +94,10 @@ class LayoutSidebarRight extends StatelessWidget {
                           child: Container(
                             child: Column(
                               children: [
-                                Text("Stroke and Fill", style: TextStyle(fontWeight: FontWeight.bold),),
+                                Text(
+                                  "Stroke and Fill",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 SizedBox(
                                   height: 20,
                                 ),
@@ -122,7 +125,6 @@ class LayoutSidebarRight extends StatelessWidget {
                                   onChanged: (color) {
                                     appData.shapeColor = color;
                                   },
-
                                 )
                               ],
                             ),
@@ -132,24 +134,24 @@ class LayoutSidebarRight extends StatelessWidget {
                 ),
                 SizedBox(
                   width: double.infinity, // Estira el widget horitzontalment
-                  child: Container(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Column(
-                      children: [
-                        Text('List of shapes'),
-                        SizedBox(
-                          height: 800,
-                          child: ListView(
-                            itemExtent: 150,
-                            children: List.generate(
-                              appData.shapesList.length,
-                                  (index) => itemShape.custom(index)
-                            ),
-                          ),
+                  child: Column(
+                    children: [
+                      Text('List of shapes'),
+                      SizedBox(
+                        height: 800,
+                        child: ListView.builder(
+                          itemExtent: 110,
+                          itemCount: appData.shapesList.length,
+                          itemBuilder: (context, index) {
+                            return ItemShape(
+                              shapeIndex: index
+                            );
+                          },
                         ),
-                        //appData.shapesList.length.toDouble()
-                      ],
-                    ),
+
+                      ),
+                      //appData.shapesList.length.toDouble()
+                    ],
                   ),
                 ),
               ]),

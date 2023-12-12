@@ -1,43 +1,66 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cupertino_desktop_kit/cdk_theme.dart';
-import 'package:flutter_cupertino_desktop_kit/cdk_theme_notifier.dart';
 import 'package:provider/provider.dart';
 
 import 'app_data.dart';
 
-class itemShape extends StatelessWidget {
-  int shapeIndex = 1;
-  double brushSize = 1.0;
-  Color color = Colors.black;
+class ItemShape extends StatelessWidget {
+  final int shapeIndex;
+  bool isSelected = false;
 
-  itemShape.custom(int index) {
-    shapeIndex = index;
-  }
+  ItemShape({required this.shapeIndex});
 
   @override
   Widget build(BuildContext context) {
     AppData appData = Provider.of<AppData>(context);
-    CDKTheme theme = CDKThemeNotifier.of(context)!.changeNotifier;
 
-    TextStyle fontBold =
-        const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
-    TextStyle font = const TextStyle(fontSize: 12, fontWeight: FontWeight.w400);
+    return GestureDetector(
+      onTapDown: (context) {
+        appData.shapesList[shapeIndex].setIsSelected(true);
+        print("tapping " + shapeIndex.toString());
+      },
+      onTapUp: (context) {
 
-    return SizedBox(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Shape ' + shapeIndex.toString()),
-          SizedBox(
-            height: 20,
-            width: 20,
-            child: ColoredBox(
-              color: appData.shapesList[shapeIndex].brushColor,
+      },
+      child: Card(
+          elevation: 10,
+          color: Color.fromARGB(255, 240, 240, 240),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            side: BorderSide(
+              color: Colors.grey,
+              width: 1.0,
             ),
           ),
-          Text('Brush size: ' + appData.shapesList[shapeIndex].brushSize.toString())
-        ],
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Shape ' + shapeIndex.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Text('Color: ', style: TextStyle(fontWeight: FontWeight.bold)),
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: appData.shapesList[shapeIndex].brushColor,
+                        border: Border.all(color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Text('Brush Size: ', style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(appData.shapesList[shapeIndex].brushSize.toString()),
+                  ],
+                ),
+              ],
+            ),
+          )
       ),
     );
   }
