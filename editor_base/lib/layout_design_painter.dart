@@ -203,6 +203,20 @@ class LayoutDesignPainter extends CustomPainter {
           path.lineTo(x, y);
         }
         canvas.drawPath(path, paint);
+
+        if (shape.isSelected) {
+          paint.color = Colors.yellowAccent;
+          paint.strokeWidth = 5;
+
+          Offset minOffset = shape.points.reduce((min, point) =>
+              Offset(min.dx < point.dx ? min.dx + shape.position.dx : point.dx + shape.position.dx, min.dy < point.dy ? min.dy + shape.position.dy : point.dy + shape.position.dy ));
+
+          Offset maxOffset = shape.points.reduce((max, point) =>
+              Offset(max.dx > point.dx ? max.dx + shape.position.dx : point.dx + shape.position.dx, max.dy > point.dy ? max.dy + shape.position.dy : point.dy + shape.position.dy ));
+          Rect rect = Rect.fromPoints(maxOffset, minOffset);
+
+          canvas.drawRect(rect, paint);
+        }
       }
     }
 
