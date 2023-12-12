@@ -1,4 +1,6 @@
+import 'package:editor_base/util_item_shape.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_desktop_kit/cdk.dart';
 import 'package:provider/provider.dart';
 import 'app_data.dart';
@@ -135,9 +137,17 @@ class LayoutSidebarRight extends StatelessWidget {
                     child: Column(
                       children: [
                         Text('List of shapes'),
-                        ListWheelScrollView(
-                            itemExtent: appData.shapesList.length.toDouble(),
-                            children: [])
+                        SizedBox(
+                          height: 800,
+                          child: ListView(
+                            itemExtent: 150,
+                            children: List.generate(
+                              appData.shapesList.length,
+                                  (index) => itemShape.custom(index)
+                            ),
+                          ),
+                        ),
+                        //appData.shapesList.length.toDouble()
                       ],
                     ),
                   ),
