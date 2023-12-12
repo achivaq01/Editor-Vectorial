@@ -9,6 +9,14 @@ class Shape {
   double rotation = 0;
   bool isSelected = false;
   List<Offset> points = [];
+/* USE THIS CODE TO FIND THE MIN AND MAX VALUES TO DRAW THE SELECT RECTANGLE
+Offset minOffset = points.reduce((min, point) =>
+      Offset(min.dx < point.dx ? min.dx : point.dx, min.dy < point.dy ? min.dy : point.dy));
+
+  Offset maxOffset = points.reduce((max, point) =>
+      Offset(max.dx > point.dx ? max.dx : point.dx, max.dy > point.dy ? max.dy : point.dy));
+ */
+
 
   Shape();
 
