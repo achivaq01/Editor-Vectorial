@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_desktop_kit/cdk.dart';
 import 'app_data.dart';
 import 'util_shape.dart';
@@ -188,10 +189,10 @@ class LayoutDesignPainter extends CustomPainter {
     if (appData.shapesList.isNotEmpty) {
       for (int i = 0; i < appData.shapesList.length; i++) {
         Paint paint = Paint();
-        paint.color = theme.colorText;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1;
         Shape shape = appData.shapesList[i];
+        paint.color = shape.brushColor;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = shape.brushSize;
         double x = shape.position.dx + shape.points[0].dx;
         double y = shape.position.dy + shape.points[0].dy;
         Path path = Path();
@@ -208,10 +209,10 @@ class LayoutDesignPainter extends CustomPainter {
     // Dibuixa el poligon que s'està afegint (relatiu a la seva posició)
     if (appData.newShape.points.isNotEmpty) {
       Paint paint = Paint();
-      paint.color = theme.colorText;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 1;
       Shape shape = appData.newShape;
+      paint.color = appData.shapeColor;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = appData.brushSize;
       double x = shape.position.dx + appData.newShape.points[0].dx;
       double y = shape.position.dy + appData.newShape.points[0].dy;
       Path path = Path();
@@ -221,6 +222,8 @@ class LayoutDesignPainter extends CustomPainter {
         y = shape.position.dy + shape.points[i].dy;
         path.lineTo(x, y);
       }
+      shape.setBrushColor(appData.shapeColor);
+      shape.setBrushSize(appData.brushSize);
       canvas.drawPath(path, paint);
     }
 

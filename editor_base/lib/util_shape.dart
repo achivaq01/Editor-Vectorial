@@ -1,12 +1,20 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class Shape {
   Offset position = const Offset(0, 0);
   Size scale = const Size(1, 1);
+  Color brushColor = Colors.black;
+  double brushSize = 20;
   double rotation = 0;
   List<Offset> points = [];
 
   Shape();
+
+  Shape.custom(double stroke, Color color) {
+    this.brushSize = stroke;
+    this.brushColor = color;
+  }
 
   void setPosition(Offset newPosition) {
     position = newPosition;
@@ -22,6 +30,14 @@ class Shape {
 
   void addPoint(Offset point) {
     points.add(Offset(point.dx, point.dy));
+  }
+
+  void setBrushColor(Color color) {
+    brushColor = color;
+  }
+
+  void setBrushSize(double size) {
+    brushSize = size;
   }
 
   void addRelativePoint(Offset point) {

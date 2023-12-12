@@ -15,6 +15,9 @@ class AppData with ChangeNotifier {
   bool readyExample = false;
   late dynamic dataExample;
 
+  Color shapeColor = Colors.black;
+  double brushSize = 1;
+
   void setZoom(double value) {
     zoom = value.clamp(25, 500);
     notifyListeners();
