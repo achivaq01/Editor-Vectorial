@@ -216,10 +216,10 @@ class LayoutDesignPainter extends CustomPainter {
         paintShape(canvas, shape);
 
         if (i == appData.shapeSelected) {
-          double minX = shape.position.dx + appData.shapesList[i].vertices.map((point) => point.dx).reduce((a, b) => a < b ? a : b);
-          double minY = shape.position.dy + appData.shapesList[i].vertices.map((point) => point.dy).reduce((a, b) => a < b ? a : b);
-          double maxX = shape.position.dx + appData.shapesList[i].vertices.map((point) => point.dx).reduce((a, b) => a > b ? a : b);
-          double maxY = shape.position.dy + appData.shapesList[i].vertices.map((point) => point.dy).reduce((a, b) => a > b ? a : b);
+          double minX = shape.position.dx + appData.shapesList[i].vertices.map((point) => point.dx).reduce((a, b) => a < b ? a : b) - shape.strokeWidth;
+          double minY = shape.position.dy + appData.shapesList[i].vertices.map((point) => point.dy).reduce((a, b) => a < b ? a : b) - shape.strokeWidth;
+          double maxX = shape.position.dx + appData.shapesList[i].vertices.map((point) => point.dx).reduce((a, b) => a > b ? a : b) + shape.strokeWidth;
+          double maxY = shape.position.dy + appData.shapesList[i].vertices.map((point) => point.dy).reduce((a, b) => a > b ? a : b) + shape.strokeWidth;
 
           Rect rect = Rect.fromLTRB(minX, minY, maxX, maxY);
           paint.strokeWidth = 2;
