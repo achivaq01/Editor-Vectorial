@@ -24,6 +24,7 @@ class AppData with ChangeNotifier {
 
   Color _backgroundColor = Colors.white;
   Color _newShapeColor = Colors.black;
+  Color selectedCardColor = CDKTheme.cyan;
 
   Color get backgroundColor => _backgroundColor;
 
