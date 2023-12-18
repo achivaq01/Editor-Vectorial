@@ -23,4 +23,8 @@ class Shape {
   void setStrokeWidth(double width) {
     strokeWidth = width;
   }
+
+  void setStrokeColor(Color color) {
+    strokeColor = color;
+  }
 }

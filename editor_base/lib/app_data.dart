@@ -22,6 +22,7 @@ class AppData with ChangeNotifier {
   late dynamic dataExample;
 
   Color _backgroundColor = Colors.white;
+  Color _newShapeColor = Colors.black;
 
   Color get backgroundColor => _backgroundColor;
 
@@ -118,4 +119,14 @@ class AppData with ChangeNotifier {
     newShape.setStrokeWidth(value);
     notifyListeners();
   }
+
+  void setNewShapeColor(Color color) {
+    _newShapeColor = color;
+    notifyListeners();
+  }
+
+  Color getNewShapeColor() {
+    return _newShapeColor;
+  }
+
 }

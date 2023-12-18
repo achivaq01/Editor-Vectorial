@@ -1,3 +1,6 @@
+import 'package:editor_base/util_button_color.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cupertino_desktop_kit/cdk.dart';
 import 'package:provider/provider.dart';
@@ -11,9 +14,56 @@ class LayoutSidebarFormat extends StatefulWidget {
 }
 
 class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
+  late Widget _preloadedColorPicker;
+  final GlobalKey<CDKDialogPopoverState> _anchorColorButton = GlobalKey();
+  final ValueNotifier<Color> _valueColorNotifier = ValueNotifier(const Color(0x800080FF));
+
+  _showPopoverColor(BuildContext context, GlobalKey anchorKey) {
+    final GlobalKey<CDKDialogPopoverArrowedState> key = GlobalKey();
+    if (anchorKey.currentContext == null) {
+      // ignore: avoid_print
+      print("Error: anchorKey not assigned to a widget");
+      return;
+    }
+    CDKDialogsManager.showPopoverArrowed(
+      key: key,
+      context: context,
+      anchorKey: anchorKey,
+      isAnimated: true,
+      isTranslucent: false,
+      onHide: () {
+        // ignore: avoid_print
+        print("hide slider $key");
+      },
+      child: _preloadedColorPicker,
+    );
+  }
+
+  Widget _buildPreloadedColorPicker() {
+    AppData appData = Provider.of<AppData>(context);
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ValueListenableBuilder<Color>(
+        valueListenable: _valueColorNotifier,
+        builder: (context, value, child) {
+          return CDKPickerColor(
+            color: value,
+            onChanged: (color) {
+              setState(() {
+                _valueColorNotifier.value = color;
+                appData.setNewShapeColor(color);
+              });
+            },
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     AppData appData = Provider.of<AppData>(context);
+    _preloadedColorPicker = _buildPreloadedColorPicker();
 
     TextStyle fontBold =
         const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
@@ -59,6 +109,18 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                         width: labelsWidth,
                         child: Text("Stroke color:", style: font)),
                     const SizedBox(width: 4),
+                    Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: ValueListenableBuilder<Color>(
+                            valueListenable: _valueColorNotifier,
+                            builder: (context, value, child) {
+                              return UtilButtonColor(
+                                  key: _anchorColorButton,
+                                  color: _valueColorNotifier.value,
+                                  onPressed: () {
+                                    _showPopoverColor(context, _anchorColorButton);
+                                  });
+                            })),
                   ],
                 ),
                 const SizedBox(height: 16),
