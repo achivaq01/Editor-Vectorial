@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_desktop_kit/cdk.dart';
 import 'app_data.dart';
 import 'util_shape.dart';
@@ -213,6 +214,22 @@ class LayoutDesignPainter extends CustomPainter {
       for (int i = 0; i < appData.shapesList.length; i++) {
         Shape shape = appData.shapesList[i];
         paintShape(canvas, shape);
+
+        if (i == appData.shapeSelected) {
+          double minX = shape.position.dx + appData.shapesList[i].vertices.map((point) => point.dx).reduce((a, b) => a < b ? a : b);
+          double minY = shape.position.dy + appData.shapesList[i].vertices.map((point) => point.dy).reduce((a, b) => a < b ? a : b);
+          double maxX = shape.position.dx + appData.shapesList[i].vertices.map((point) => point.dx).reduce((a, b) => a > b ? a : b);
+          double maxY = shape.position.dy + appData.shapesList[i].vertices.map((point) => point.dy).reduce((a, b) => a > b ? a : b);
+
+          Rect rect = Rect.fromLTRB(minX, minY, maxX, maxY);
+          paint.strokeWidth = 2;
+          paint.color = Colors.yellowAccent;
+
+          canvas.drawLine(Offset(minX, minY), Offset(maxX, minY), paint);
+          canvas.drawLine(Offset(maxX, minY), Offset(maxX, maxY), paint);
+          canvas.drawLine(Offset(maxX, maxY), Offset(minX, maxY), paint);
+          canvas.drawLine(Offset(minX, maxY), Offset(minX, minY), paint);
+        }
       }
     }
 
