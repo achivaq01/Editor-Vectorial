@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cupertino_desktop_kit/cdk_theme.dart';
 import 'app_click_selector.dart';
 import 'app_data_actions.dart';
 import 'util_shape.dart';
@@ -21,13 +22,12 @@ class AppData with ChangeNotifier {
   bool readyExample = false;
   late dynamic dataExample;
 
-  Color _backgroundColor = Colors.white;
+  Color backgroundColor = Colors.white;
   Color _newShapeColor = Colors.black;
-
-  Color get backgroundColor => _backgroundColor;
+  Color selectedCardColor = CDKTheme.cyan;
 
   void setBackgroundColor(Color color) {
-    _backgroundColor = color;
+    actionManager.register(ActionSetDocColor(this, backgroundColor, color));
     notifyListeners();
   }
 
@@ -127,5 +127,10 @@ class AppData with ChangeNotifier {
 
   Color getNewShapeColor() {
     return _newShapeColor;
+  }
+
+  void setShapeColor(int shapeId, Color color) {
+    shapesList[shapeId].strokeColor = color;
+    notifyListeners();
   }
 }

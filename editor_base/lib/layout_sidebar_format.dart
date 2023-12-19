@@ -50,7 +50,11 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
             onChanged: (color) {
               setState(() {
                 _valueColorNotifier.value = color;
+                if (appData.shapeSelected >= 0) {
+                  appData.setShapeColor(appData.shapeSelected, color);
+                }
                 appData.setNewShapeColor(color);
+
               });
             },
           );
@@ -168,6 +172,9 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                         increment: 0.5,
                         decimals: 2,
                         onValueChanged: (value) {
+                          if (appData.shapeSelected >= 0) {
+                            appData.shapesList[appData.shapeSelected].strokeWidth = value;
+                          }
                           appData.setNewShapeStrokeWidth(value);
                         },
                       )),

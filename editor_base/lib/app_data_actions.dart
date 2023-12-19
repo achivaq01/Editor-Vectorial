@@ -108,6 +108,9 @@ class ActionAddNewShape implements Action {
 
   @override
   void undo() {
+    if (appData.shapesList[appData.shapeSelected] == newShape) {
+      appData.shapeSelected = -1;
+    }
     appData.shapesList.remove(newShape);
     appData.forceNotifyListeners();
   }
@@ -143,4 +146,27 @@ class ActionEraseShape implements Action {
       appData.shapesList.remove(appData.shapesList[appData.shapeSelected]);
     }
   }
+}
+
+class ActionSetDocColor implements Action {
+  final AppData appData;
+  final Color previousColor;
+  final Color newColor;
+
+  ActionSetDocColor(this.appData, this.previousColor, this.newColor);
+
+  @override
+  void redo() {
+    appData.backgroundColor = newColor;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void undo() {
+    appData.backgroundColor = previousColor;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void erase() {}
 }
