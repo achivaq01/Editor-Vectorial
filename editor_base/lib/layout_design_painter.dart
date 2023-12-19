@@ -255,3 +255,4 @@ class LayoutDesignPainter extends CustomPainter {
         oldDelegate.centerY != centerY;
   }
 }
+

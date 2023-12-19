@@ -129,4 +129,9 @@ class AppData with ChangeNotifier {
     return _newShapeColor;
   }
 
+  void setShapeColor(int shapeId, Color color) {
+    shapesList[shapeId].strokeColor = color;
+    notifyListeners();
+  }
+
 }
