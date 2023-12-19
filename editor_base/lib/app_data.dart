@@ -22,14 +22,12 @@ class AppData with ChangeNotifier {
   bool readyExample = false;
   late dynamic dataExample;
 
-  Color _backgroundColor = Colors.white;
+  Color backgroundColor = Colors.white;
   Color _newShapeColor = Colors.black;
   Color selectedCardColor = CDKTheme.cyan;
 
-  Color get backgroundColor => _backgroundColor;
-
   void setBackgroundColor(Color color) {
-    _backgroundColor = color;
+    actionManager.register(ActionSetDocColor(this, backgroundColor, color));
     notifyListeners();
   }
 

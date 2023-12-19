@@ -19,6 +19,7 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
       ValueNotifier(const Color(0x800080FF));
 
   _showPopoverColor(BuildContext context, GlobalKey anchorKey) {
+    AppData appData = Provider.of<AppData>(context, listen: false);
     final GlobalKey<CDKDialogPopoverArrowedState> key = GlobalKey();
     if (anchorKey.currentContext == null) {
       // ignore: avoid_print
@@ -34,6 +35,7 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
       onHide: () {
         // ignore: avoid_print
         print("hide slider $key");
+        appData.setBackgroundColor(_valueColorNotifier.value);
       },
       child: _preloadedColorPicker,
     );
@@ -51,7 +53,6 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
             onChanged: (color) {
               setState(() {
                 _valueColorNotifier.value = color;
-                appData.setBackgroundColor(color);
               });
             },
           );

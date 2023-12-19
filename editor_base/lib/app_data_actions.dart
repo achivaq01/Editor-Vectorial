@@ -103,3 +103,24 @@ class ActionAddNewShape implements Action {
     appData.forceNotifyListeners();
   }
 }
+
+class ActionSetDocColor implements Action {
+  final AppData appData;
+  final Color previousColor;
+  final Color newColor;
+
+  ActionSetDocColor(this.appData, this.previousColor, this.newColor);
+
+  @override
+  void redo() {
+    appData.backgroundColor = newColor;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void undo() {
+    appData.backgroundColor = previousColor;
+    appData.forceNotifyListeners();
+  }
+
+}
