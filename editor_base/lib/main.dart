@@ -29,13 +29,19 @@ void main() async {
           (Platform.isWindows && event.isControlPressed);
       bool isShiftPressed = event.isShiftPressed;
       bool isZPressed = event.logicalKey == LogicalKeyboardKey.keyZ;
-
+      bool isDeletePressed = event.logicalKey == LogicalKeyboardKey.delete;
+      bool isBackspacePressed =
+          event.logicalKey == LogicalKeyboardKey.backspace;
       if (event is RawKeyDownEvent) {
         if (isControlPressed && isZPressed && !isShiftPressed) {
           appData.actionManager.undo();
           return KeyEventResult.handled;
         } else if (isControlPressed && isShiftPressed && isZPressed) {
           appData.actionManager.redo();
+          return KeyEventResult.handled;
+        } else if ((isControlPressed && isDeletePressed) ||
+            (isControlPressed && isBackspacePressed)) {
+          appData.actionManager.erase(appData);
           return KeyEventResult.handled;
         }
         if (event.logicalKey == LogicalKeyboardKey.altLeft) {

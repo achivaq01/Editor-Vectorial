@@ -7,6 +7,7 @@ import 'util_shape.dart';
 abstract class Action {
   void undo();
   void redo();
+  void erase();
 }
 
 // Gestiona la llista d'accions per poder desfer i refer
@@ -37,6 +38,14 @@ class ActionManager {
       actions[currentIndex].redo();
     }
   }
+
+  void erase(AppData appData) {
+    if (appData.shapeSelected >= 0) {
+      appData.shapesList.removeAt(appData.shapeSelected);
+      appData.shapeSelected = -1;
+      appData.notifyListeners();
+    }
+  }
 }
 
 class ActionSetDocWidth implements Action {
@@ -60,6 +69,9 @@ class ActionSetDocWidth implements Action {
   void redo() {
     _action(newValue);
   }
+
+  @override
+  void erase() {}
 }
 
 class ActionSetDocHeight implements Action {
@@ -83,6 +95,9 @@ class ActionSetDocHeight implements Action {
   void redo() {
     _action(newValue);
   }
+
+  @override
+  void erase() {}
 }
 
 class ActionAddNewShape implements Action {
@@ -105,6 +120,32 @@ class ActionAddNewShape implements Action {
     appData.shapesList.add(newShape);
     appData.forceNotifyListeners();
   }
+
+  @override
+  void erase() {}
+}
+
+class ActionEraseShape implements Action {
+  final AppData appData;
+  final Shape shape;
+
+  ActionEraseShape(this.appData, this.shape);
+
+  @override
+  void undo() {}
+
+  @override
+  void redo() {}
+
+  @override
+  void erase() {
+    if (appData.shapesList.isEmpty) {
+      return;
+    }
+    if (appData.shapeSelected >= 0) {
+      appData.shapesList.remove(appData.shapesList[appData.shapeSelected]);
+    }
+  }
 }
 
 class ActionSetDocColor implements Action {
@@ -126,4 +167,6 @@ class ActionSetDocColor implements Action {
     appData.forceNotifyListeners();
   }
 
+  @override
+  void erase() {}
 }
