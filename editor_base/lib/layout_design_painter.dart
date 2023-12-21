@@ -170,6 +170,11 @@ class LayoutDesignPainter extends CustomPainter {
     }
   }
 
+  void paintSelectedRectangle(Canvas canvas, AppData appData, double scale,
+      double translateX, double translateY) {
+    // Dibuixa el requadre de l'objecte seleccionat aquí
+  }
+
   @override
   void paint(Canvas canvas, Size size) {
     Size docSize = Size(appData.docSize.width, appData.docSize.height);
@@ -224,6 +229,11 @@ class LayoutDesignPainter extends CustomPainter {
 
     // Restaura l'estat previ a l'escalat i translació
     canvas.restore();
+
+    // Dibuixa el requadre de l'objecte seleccionat
+    if (appData.shapeSelected != -1) {
+      paintSelectedRectangle(canvas, appData, scale, translateX, translateY);
+    }
 
     // Dibuixa la regla superior
     drawRulers(canvas, theme, size, docSize, scale, translateX, translateY);
