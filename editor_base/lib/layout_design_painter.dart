@@ -204,7 +204,7 @@ class LayoutDesignPainter extends CustomPainter {
       height *= scale;
 
       // Dibuixa el requadre de l'objecte seleccionat aquí
-      // fent servir els càlculs anteriors
+      // fent servir els càlculs anteriors (minX, minY, width, height)
     }
   }
 
