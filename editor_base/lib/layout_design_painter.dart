@@ -149,11 +149,9 @@ class LayoutDesignPainter extends CustomPainter {
   static void paintShape(Canvas canvas, Shape shape) {
     if (shape.vertices.isNotEmpty) {
       Paint paint = Paint();
-      paint.color = CDKTheme.black;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = shape.strokeWidth;
       double x = shape.position.dx + shape.vertices[0].dx;
       double y = shape.position.dy + shape.vertices[0].dy;
+
       Path path = Path();
       path.moveTo(x, y);
       for (int i = 1; i < shape.vertices.length; i++) {
@@ -161,7 +159,14 @@ class LayoutDesignPainter extends CustomPainter {
         y = shape.position.dy + shape.vertices[i].dy;
         path.lineTo(x, y);
       }
-      canvas.drawPath(path, paint);
+
+      // Draw stroke
+      if (shape.strokeColor.alpha != 0) {
+        paint.style = PaintingStyle.stroke;
+        paint.color = shape.strokeColor;
+        paint.strokeWidth = shape.strokeWidth;
+        canvas.drawPath(path, paint);
+      }
     }
   }
 
