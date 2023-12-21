@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
@@ -172,7 +173,39 @@ class LayoutDesignPainter extends CustomPainter {
 
   void paintSelectedRectangle(Canvas canvas, AppData appData, double scale,
       double translateX, double translateY) {
-    // Dibuixa el requadre de l'objecte seleccionat aquí
+    Shape shape = appData.shapesList[appData.shapeSelected];
+
+    // Estem fora dels límits de scale i rotate, cal calcular la posició real 'manualment'
+    if (shape.vertices.isNotEmpty) {
+      double minX = double.infinity, minY = double.infinity;
+      double maxX = -double.infinity, maxY = -double.infinity;
+      double strokeHalf = shape.strokeWidth / 2;
+      for (final vertex in shape.vertices) {
+        double vertexX = shape.position.dx + vertex.dx;
+        double vertexY = shape.position.dy + vertex.dy;
+        minX = min(minX, vertexX);
+        minY = min(minY, vertexY);
+        maxX = max(maxX, vertexX);
+        maxY = max(maxY, vertexY);
+      }
+
+      // Definir els limits compta amb l'stroke
+      minX -= strokeHalf;
+      minY -= strokeHalf;
+      maxX += strokeHalf;
+      maxY += strokeHalf;
+
+      double width = maxX - minX;
+      double height = maxY - minY;
+
+      minX = (minX + translateX) * scale;
+      minY = (minY + translateY) * scale;
+      width *= scale;
+      height *= scale;
+
+      // Dibuixa el requadre de l'objecte seleccionat aquí
+      // fent servir els càlculs anteriors
+    }
   }
 
   @override
