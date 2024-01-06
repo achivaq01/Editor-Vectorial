@@ -20,6 +20,7 @@ class LayoutDesignState extends State<LayoutDesign> {
   Offset _scrollCenter = const Offset(0, 0);
   bool _isMouseButtonPressed = false;
   final FocusNode _focusNode = FocusNode();
+  bool _isDragging = false;
 
   @override
   void initState() {
@@ -145,13 +146,30 @@ class LayoutDesignState extends State<LayoutDesign> {
                         if (appData.toolSelected == "pointer_shapes") {
                           await appData.selectShapeAtPosition(docPosition,
                               event.localPosition, constraints, _scrollCenter);
-                        }
-                        if (appData.toolSelected == "shape_drawing") {
+                          if (appData.shapeSelected >= 0) {
+                            _isDragging = true;
+                          }
+                        } else if (appData.toolSelected == "shape_drawing") {
                           appData.addNewShape(docPosition);
                         }
+
                         setState(() {});
                       },
                       onPointerMove: (event) {
+                        if (_isDragging && appData.shapeSelected >= 0) {
+                          Size docSize = Size(
+                              appData.docSize.width, appData.docSize.height);
+                          Offset docPosition = _getDocPosition(
+                              event.localPosition,
+                              appData.zoom,
+                              constraints,
+                              docSize,
+                              _scrollCenter);
+
+                          appData.setShapePosition(docPosition);
+
+                          setState(() {});
+                        }
                         if (_isMouseButtonPressed) {
                           if (appData.toolSelected == "shape_drawing") {
                             Size docSize = Size(
@@ -177,6 +195,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                         }
                       },
                       onPointerUp: (event) {
+                        _isDragging = false;
                         _isMouseButtonPressed = false;
                         if (appData.toolSelected == "shape_drawing") {
                           appData.addNewShapeToShapesList();

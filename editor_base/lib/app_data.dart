@@ -97,6 +97,7 @@ class AppData with ChangeNotifier {
   void addNewShape(Offset position) {
     newShape.setPosition(position);
     newShape.addPoint(const Offset(0, 0));
+    shapeSelected = shapesList.length - 1;
     notifyListeners();
   }
 
@@ -132,5 +133,21 @@ class AppData with ChangeNotifier {
   void setShapeColor(int shapeId, Color color) {
     shapesList[shapeId].strokeColor = color;
     notifyListeners();
+  }
+
+  void setShapePosition(Offset position) {
+    if (shapeSelected >= 0 && shapeSelected < shapesList.length) {
+      shapesList[shapeSelected].setPosition(position);
+      notifyListeners();
+    }
+  }
+
+  void updateShapePosition(Offset delta) {
+    if (shapeSelected >= 0 && shapeSelected < shapesList.length) {
+      shapesList[shapeSelected].position += delta;
+      notifyListeners();
+    } else {
+      setShapeSelected(0);
+    }
   }
 }

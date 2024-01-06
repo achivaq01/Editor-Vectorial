@@ -54,7 +54,6 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                   appData.setShapeColor(appData.shapeSelected, color);
                 }
                 appData.setNewShapeColor(color);
-
               });
             },
           );
@@ -80,79 +79,78 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
           return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Stroke and fill:", style: fontBold),
+                Text("Coordinates:", style: fontBold),
                 const SizedBox(height: 8),
                 Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                   Container(
-                      alignment: Alignment.centerRight,
-                      width: labelsWidth,
-                      child: Text("Offset X:", style: font)),
+                    alignment: Alignment.centerRight,
+                    width: labelsWidth,
+                    child: Text("Offset X:", style: font),
+                  ),
                   const SizedBox(width: 4),
                   Container(
-                      alignment: Alignment.centerLeft,
-                      width: 80,
-                      child: CDKFieldNumeric(
-                        value: appData.newShape.strokeWidth,
-                        min: 0.01,
-                        max: 100,
-                        units: "px",
-                        increment: 0.5,
-                        decimals: 2,
-                        onValueChanged: (value) {
-                          appData.setNewShapeStrokeWidth(value);
-                        },
-                      )),
-                ]),
-                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  Container(
-                      alignment: Alignment.centerRight,
-                      width: labelsWidth,
-                      child: Text("Offset Y:", style: font)),
-                  const SizedBox(width: 4),
-                  Container(
-                      alignment: Alignment.centerLeft,
-                      width: 80,
-                      child: CDKFieldNumeric(
-                        value: appData.newShape.strokeWidth,
-                        min: 0.01,
-                        max: 100,
-                        units: "px",
-                        increment: 0.5,
-                        decimals: 2,
-                        onValueChanged: (value) {
-                          appData.setNewShapeStrokeWidth(value);
-                        },
-                      )),
+                    alignment: Alignment.centerLeft,
+                    width: 80,
+                    child: CDKFieldNumeric(
+                      value: appData.shapesList.isNotEmpty &&
+                              appData.shapeSelected >= 0
+                          ? appData
+                              .shapesList[appData.shapeSelected].position.dx
+                          : 0.0,
+                      min: -2500,
+                      max: 2500,
+                      units: "px",
+                      increment: 1,
+                      decimals: 2,
+                      onValueChanged: (value) {
+                        if (appData.shapeSelected >= 0) {
+                          appData.setShapePosition(Offset(
+                            value,
+                            appData
+                                .shapesList[appData.shapeSelected].position.dy,
+                          ));
+                        }
+                      },
+                      enabled: appData.shapeSelected >= 0,
+                    ),
+                  ),
                 ]),
                 const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                        alignment: Alignment.centerRight,
-                        width: labelsWidth,
-                        child: Text("Stroke color:", style: font)),
-                    const SizedBox(width: 4),
-                    Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: ValueListenableBuilder<Color>(
-                            valueListenable: _valueColorNotifier,
-                            builder: (context, value, child) {
-                              return UtilButtonColor(
-                                  key: _anchorColorButton,
-                                  color: _valueColorNotifier.value,
-                                  onPressed: () {
-                                    _showPopoverColor(
-                                        context, _anchorColorButton);
-                                  });
-                            })),
-                  ],
-                ),
-                const SizedBox(height: 16),
-              ]);
-          return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Container(
+                    alignment: Alignment.centerRight,
+                    width: labelsWidth,
+                    child: Text("Offset Y:", style: font),
+                  ),
+                  const SizedBox(width: 4),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: 80,
+                    child: CDKFieldNumeric(
+                      value: appData.shapesList.isNotEmpty &&
+                              appData.shapeSelected >= 0
+                          ? appData
+                              .shapesList[appData.shapeSelected].position.dy
+                          : 0.0,
+                      min: -2500,
+                      max: 2500,
+                      units: "px",
+                      increment: 1,
+                      decimals: 2,
+                      onValueChanged: (value) {
+                        if (appData.shapeSelected >= 0) {
+                          appData.setShapePosition(Offset(
+                            appData
+                                .shapesList[appData.shapeSelected].position.dx,
+                            value,
+                          ));
+                        }
+                      },
+                      enabled: appData.shapeSelected >= 0,
+                    ),
+                  ),
+                ]),
+                const SizedBox(height: 8),
                 Text("Stroke and fill:", style: fontBold),
                 const SizedBox(height: 8),
                 Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -172,14 +170,10 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                         increment: 0.5,
                         decimals: 2,
                         onValueChanged: (value) {
-                          if (appData.shapeSelected >= 0) {
-                            appData.shapesList[appData.shapeSelected].strokeWidth = value;
-                          }
                           appData.setNewShapeStrokeWidth(value);
                         },
                       )),
                 ]),
-                const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
