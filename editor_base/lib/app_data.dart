@@ -26,6 +26,8 @@ class AppData with ChangeNotifier {
   Color _newShapeColor = Colors.black;
   Color selectedCardColor = CDKTheme.cyan;
 
+  Offset mouseToPolygonDifference = Offset.zero;
+
   void setBackgroundColor(Color color) {
     actionManager.register(ActionSetDocColor(this, backgroundColor, color));
     notifyListeners();

@@ -43,7 +43,8 @@ class ActionManager {
     if (appData.shapeSelected >= 0) {
       appData.shapesList.removeAt(appData.shapeSelected);
       appData.shapeSelected = -1;
-      appData.notifyListeners();
+      appData.forceNotifyListeners();
+      // appData.notifyListeners();
     }
   }
 }
@@ -108,9 +109,12 @@ class ActionAddNewShape implements Action {
 
   @override
   void undo() {
+    /*
     if (appData.shapesList[appData.shapeSelected] == newShape) {
       appData.shapeSelected = -1;
     }
+    */
+    appData.shapeSelected = -1;
     appData.shapesList.remove(newShape);
     appData.forceNotifyListeners();
   }
@@ -132,7 +136,10 @@ class ActionEraseShape implements Action {
   ActionEraseShape(this.appData, this.shape);
 
   @override
-  void undo() {}
+  void undo() {
+    appData.shapesList.add(shape);
+    appData.forceNotifyListeners();
+  }
 
   @override
   void redo() {}
