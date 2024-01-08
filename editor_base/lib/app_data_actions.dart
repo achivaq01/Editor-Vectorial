@@ -126,31 +126,13 @@ class ActionAddNewShape implements Action {
   }
 
   @override
-  void erase() {}
-}
-
-class ActionEraseShape implements Action {
-  final AppData appData;
-  final Shape shape;
-
-  ActionEraseShape(this.appData, this.shape);
-
-  @override
-  void undo() {
-    appData.shapesList.add(shape);
-    appData.forceNotifyListeners();
-  }
-
-  @override
-  void redo() {}
-
-  @override
   void erase() {
     if (appData.shapesList.isEmpty) {
       return;
     }
     if (appData.shapeSelected >= 0) {
       appData.shapesList.remove(appData.shapesList[appData.shapeSelected]);
+      appData.forceNotifyListeners();
     }
   }
 }
@@ -171,6 +153,31 @@ class ActionSetDocColor implements Action {
   @override
   void undo() {
     appData.backgroundColor = previousColor;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void erase() {}
+}
+
+class ActionMoveShape implements Action {
+  final AppData appData;
+  final Shape movedShape;
+  final Offset previousPosition;
+  final Offset newPosition;
+
+  ActionMoveShape(
+      this.appData, this.movedShape, this.previousPosition, this.newPosition);
+
+  @override
+  void undo() {
+    movedShape.position = previousPosition;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void redo() {
+    movedShape.position = newPosition;
     appData.forceNotifyListeners();
   }
 

@@ -132,31 +132,6 @@ class LayoutDesignState extends State<LayoutDesign> {
               child: MouseRegion(
                   cursor: cursorShown,
                   child: Listener(
-                      /*
-                      onPointerDown: (event) async {
-                        _focusNode.requestFocus();
-                        _isMouseButtonPressed = true;
-                        Size docSize =
-                            Size(appData.docSize.width, appData.docSize.height);
-                        Offset docPosition = _getDocPosition(
-                            event.localPosition,
-                            appData.zoom,
-                            constraints,
-                            docSize,
-                            _scrollCenter);
-                        if (appData.toolSelected == "pointer_shapes") {
-                          await appData.selectShapeAtPosition(docPosition,
-                              event.localPosition, constraints, _scrollCenter);
-                          if (appData.shapeSelected >= 0) {
-                            _isDragging = true;
-                          }
-                        } else if (appData.toolSelected == "shape_drawing") {
-                          appData.addNewShape(docPosition);
-                        }
-
-                        setState(() {});
-                      },
-                      */
                       onPointerDown: (event) async {
                         _focusNode.requestFocus();
                         _isMouseButtonPressed = true;
@@ -209,7 +184,6 @@ class LayoutDesignState extends State<LayoutDesign> {
                               docSize,
                               _scrollCenter);
 
-                          // appData.setShapePosition(docPosition);
                           appData.setShapePosition(Offset(
                             docPosition.dx -
                                 appData.mouseToPolygonDifference.dx,
