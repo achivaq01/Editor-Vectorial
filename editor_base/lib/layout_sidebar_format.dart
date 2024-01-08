@@ -1,3 +1,4 @@
+import 'package:editor_base/app_data_actions.dart';
 import 'package:editor_base/util_button_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cupertino_desktop_kit/cdk.dart';
@@ -55,8 +56,8 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                     appData.shapeSelected < appData.shapesList.length) {
                   appData.setShapeColor(appData.shapeSelected, color);
                 }
-                appData.setNewShapeColor(color);
               });
+              appData.actionManager.register(ActionModifyShapeColor(appData, appData.shapesList[appData.shapeSelected], color, appData.shapesList[appData.shapeSelected].strokeColor));
             },
           );
         },

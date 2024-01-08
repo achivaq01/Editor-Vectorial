@@ -98,7 +98,6 @@ class ActionAddNewShape implements Action {
       appData.shapeSelected = -1;
     }
     */
-    appData.shapeSelected = -1;
     appData.shapesList.remove(newShape);
     appData.forceNotifyListeners();
   }
@@ -128,6 +127,28 @@ class ActionEraseShape implements Action {
     appData.forceNotifyListeners();
   }
 }
+class ActionModifyShapeColor implements Action {
+  final AppData appData;
+  final Shape shape;
+  final Color newColor;
+  final Color oldColor;
+
+  ActionModifyShapeColor(this.appData, this.shape, this.newColor, this.oldColor);
+
+  @override
+  void redo() {
+    appData.shapesList[appData.shapesList.indexOf(shape)].setStrokeColor(newColor);
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void undo() {
+    appData.shapesList[appData.shapesList.indexOf(shape)].setStrokeColor(oldColor);
+    appData.forceNotifyListeners();
+  }
+
+}
+
 
 class ActionSetDocColor implements Action {
   final AppData appData;

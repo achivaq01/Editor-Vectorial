@@ -88,18 +88,9 @@ class AppData with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> selectShapeAtPosition(Offset docPosition, Offset localPosition,
-      BoxConstraints constraints, Offset center) async {
-    shapeSelectedPrevious = shapeSelected;
-    shapeSelected = -1;
-    setShapeSelected(await AppClickSelector.selectShapeAtPosition(
-        this, docPosition, localPosition, constraints, center));
-  }
-
   void addNewShape(Offset position) {
     newShape.setPosition(position);
     newShape.addPoint(const Offset(0, 0));
-    shapeSelected = shapesList.length - 1;
     notifyListeners();
   }
 

@@ -20,6 +20,7 @@ class LayoutDesignState extends State<LayoutDesign> {
   Offset _scrollCenter = const Offset(0, 0);
   bool _isMouseButtonPressed = false;
   final FocusNode _focusNode = FocusNode();
+  bool _isDragging = false;
 
   @override
   void initState() {
@@ -147,6 +148,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                           await appData.selectShapeAtPosition(docPosition,
                               event.localPosition, constraints, _scrollCenter);
                           if (appData.shapeSelected >= 0) {
+                            _isDragging = true;
                           }
                         } else if (appData.toolSelected == "shape_drawing") {
                           appData.addNewShape(docPosition);
@@ -171,13 +173,9 @@ class LayoutDesignState extends State<LayoutDesign> {
                         );
 
                         if (appData.toolSelected == "pointer_shapes") {
-                          await appData.selectShapeAtPosition(
-                            docPosition,
-                            event.localPosition,
-                            constraints,
-                            _scrollCenter,
-                          );
                           if (appData.shapeSelected >= 0) {
+                            _isDragging = true;
+
                             // Save the difference for later use
                             appData.mouseToPolygonDifference = Offset(
                               docPosition.dx -
@@ -195,7 +193,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                         setState(() {});
                       },
                       onPointerMove: (event) {
-                        if (appData.shapeSelected >= 0) {
+                        if (_isDragging && appData.shapeSelected >= 0) {
                           Size docSize = Size(
                               appData.docSize.width, appData.docSize.height);
                           Offset docPosition = _getDocPosition(
@@ -239,6 +237,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                         }
                       },
                       onPointerUp: (event) {
+                        _isDragging = false;
                         _isMouseButtonPressed = false;
                         if (appData.toolSelected == "shape_drawing") {
                           appData.addNewShapeToShapesList();
