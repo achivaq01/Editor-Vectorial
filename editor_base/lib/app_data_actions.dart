@@ -7,7 +7,6 @@ import 'util_shape.dart';
 abstract class Action {
   void undo();
   void redo();
-  void erase();
 }
 
 // Gestiona la llista d'accions per poder desfer i refer
@@ -38,15 +37,6 @@ class ActionManager {
       actions[currentIndex].redo();
     }
   }
-
-  void erase(AppData appData) {
-    if (appData.shapeSelected >= 0) {
-      appData.shapesList.removeAt(appData.shapeSelected);
-      appData.shapeSelected = -1;
-      appData.forceNotifyListeners();
-      // appData.notifyListeners();
-    }
-  }
 }
 
 class ActionSetDocWidth implements Action {
@@ -70,9 +60,6 @@ class ActionSetDocWidth implements Action {
   void redo() {
     _action(newValue);
   }
-
-  @override
-  void erase() {}
 }
 
 class ActionSetDocHeight implements Action {
@@ -96,9 +83,6 @@ class ActionSetDocHeight implements Action {
   void redo() {
     _action(newValue);
   }
-
-  @override
-  void erase() {}
 }
 
 class ActionAddNewShape implements Action {
@@ -124,9 +108,6 @@ class ActionAddNewShape implements Action {
     appData.shapesList.add(newShape);
     appData.forceNotifyListeners();
   }
-
-  @override
-  void erase() {}
 }
 
 class ActionEraseShape implements Action {
@@ -142,16 +123,9 @@ class ActionEraseShape implements Action {
   }
 
   @override
-  void redo() {}
-
-  @override
-  void erase() {
-    if (appData.shapesList.isEmpty) {
-      return;
-    }
-    if (appData.shapeSelected >= 0) {
-      appData.shapesList.remove(appData.shapesList[appData.shapeSelected]);
-    }
+  void redo() {
+    appData.shapesList.remove(shape);
+    appData.forceNotifyListeners();
   }
 }
 
@@ -173,7 +147,27 @@ class ActionSetDocColor implements Action {
     appData.backgroundColor = previousColor;
     appData.forceNotifyListeners();
   }
+}
+
+class ActionMoveShape implements Action {
+  final AppData appData;
+  final Shape movedShape;
+  final Offset previousPosition;
+  final Offset newPosition;
+
+  ActionMoveShape(
+      this.appData, this.movedShape, this.previousPosition, this.newPosition);
 
   @override
-  void erase() {}
+  void undo() {
+    movedShape.position = previousPosition;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void redo() {
+    movedShape.position = newPosition;
+    appData.forceNotifyListeners();
+  }
 }
+

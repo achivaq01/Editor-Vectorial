@@ -15,7 +15,7 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
   late Widget _preloadedColorPicker;
   final GlobalKey<CDKDialogPopoverState> _anchorColorButton = GlobalKey();
   final ValueNotifier<Color> _valueColorNotifier =
-      ValueNotifier(const Color(0x800080FF));
+  ValueNotifier(const Color(0x800080FF));
 
   _showPopoverColor(BuildContext context, GlobalKey anchorKey) {
     final GlobalKey<CDKDialogPopoverArrowedState> key = GlobalKey();
@@ -50,7 +50,9 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
             onChanged: (color) {
               setState(() {
                 _valueColorNotifier.value = color;
-                if (appData.shapeSelected >= 0) {
+                if (appData.shapeSelected >= 0 &&
+                    appData.shapesList.isNotEmpty &&
+                    appData.shapeSelected < appData.shapesList.length) {
                   appData.setShapeColor(appData.shapeSelected, color);
                 }
                 appData.setNewShapeColor(color);
@@ -68,7 +70,7 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
     _preloadedColorPicker = _buildPreloadedColorPicker();
 
     TextStyle fontBold =
-        const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
+    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
     TextStyle font = const TextStyle(fontSize: 12, fontWeight: FontWeight.w400);
 
     return Container(
@@ -77,128 +79,141 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
         builder: (BuildContext context, BoxConstraints constraints) {
           double labelsWidth = constraints.maxWidth * 0.5;
           return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Coordinates:", style: fontBold),
-                const SizedBox(height: 8),
-                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  Container(
-                    alignment: Alignment.centerRight,
-                    width: labelsWidth,
-                    child: Text("Offset X:", style: font),
-                  ),
-                  const SizedBox(width: 4),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 80,
-                    child: CDKFieldNumeric(
-                      value: appData.shapesList.isNotEmpty &&
-                              appData.shapeSelected >= 0
-                          ? appData
-                              .shapesList[appData.shapeSelected].position.dx
-                          : 0.0,
-                      min: -2500,
-                      max: 2500,
-                      units: "px",
-                      increment: 1,
-                      decimals: 2,
-                      onValueChanged: (value) {
-                        if (appData.shapeSelected >= 0) {
-                          appData.setShapePosition(Offset(
-                            value,
-                            appData
-                                .shapesList[appData.shapeSelected].position.dy,
-                          ));
-                        }
-                      },
-                      enabled: appData.shapeSelected >= 0,
-                    ),
-                  ),
-                ]),
-                const SizedBox(height: 8),
-                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  Container(
-                    alignment: Alignment.centerRight,
-                    width: labelsWidth,
-                    child: Text("Offset Y:", style: font),
-                  ),
-                  const SizedBox(width: 4),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: 80,
-                    child: CDKFieldNumeric(
-                      value: appData.shapesList.isNotEmpty &&
-                              appData.shapeSelected >= 0
-                          ? appData
-                              .shapesList[appData.shapeSelected].position.dy
-                          : 0.0,
-                      min: -2500,
-                      max: 2500,
-                      units: "px",
-                      increment: 1,
-                      decimals: 2,
-                      onValueChanged: (value) {
-                        if (appData.shapeSelected >= 0) {
-                          appData.setShapePosition(Offset(
-                            appData
-                                .shapesList[appData.shapeSelected].position.dx,
-                            value,
-                          ));
-                        }
-                      },
-                      enabled: appData.shapeSelected >= 0,
-                    ),
-                  ),
-                ]),
-                const SizedBox(height: 8),
-                Text("Stroke and fill:", style: fontBold),
-                const SizedBox(height: 8),
-                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  Container(
-                      alignment: Alignment.centerRight,
-                      width: labelsWidth,
-                      child: Text("Stroke width:", style: font)),
-                  const SizedBox(width: 4),
-                  Container(
-                      alignment: Alignment.centerLeft,
-                      width: 80,
-                      child: CDKFieldNumeric(
-                        value: appData.newShape.strokeWidth,
-                        min: 0.01,
-                        max: 100,
-                        units: "px",
-                        increment: 0.5,
-                        decimals: 2,
-                        onValueChanged: (value) {
-                          appData.setNewShapeStrokeWidth(value);
-                        },
-                      )),
-                ]),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                        alignment: Alignment.centerRight,
-                        width: labelsWidth,
-                        child: Text("Stroke color:", style: font)),
-                    const SizedBox(width: 4),
-                    Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: ValueListenableBuilder<Color>(
-                            valueListenable: _valueColorNotifier,
-                            builder: (context, value, child) {
-                              return UtilButtonColor(
-                                  key: _anchorColorButton,
-                                  color: _valueColorNotifier.value,
-                                  onPressed: () {
-                                    _showPopoverColor(
-                                        context, _anchorColorButton);
-                                  });
-                            })),
-                  ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Coordinates:", style: fontBold),
+              const SizedBox(height: 8),
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: labelsWidth,
+                  child: Text("Offset X:", style: font),
                 ),
-                const SizedBox(height: 16),
-              ]);
+                const SizedBox(width: 4),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: 80,
+                  child: CDKFieldNumeric(
+                    value: appData.shapesList.isNotEmpty &&
+                        appData.shapeSelected >= 0 &&
+                        appData.shapeSelected < appData.shapesList.length
+                        ? appData
+                        .shapesList[appData.shapeSelected].position.dx
+                        : 0.0,
+                    min: -2500,
+                    max: 2500,
+                    units: "px",
+                    increment: 1,
+                    decimals: 2,
+                    onValueChanged: (value) {
+                      if (appData.shapeSelected >= 0 &&
+                          appData.shapesList.isNotEmpty &&
+                          appData.shapeSelected < appData.shapesList.length) {
+                        appData.setShapePosition(Offset(
+                          value,
+                          appData
+                              .shapesList[appData.shapeSelected].position.dy,
+                        ));
+                      }
+                    },
+                    enabled: appData.shapeSelected >= 0,
+                  ),
+                ),
+              ]),
+              const SizedBox(height: 8),
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: labelsWidth,
+                  child: Text("Offset Y:", style: font),
+                ),
+                const SizedBox(width: 4),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: 80,
+                  child: CDKFieldNumeric(
+                    value: appData.shapesList.isNotEmpty &&
+                        appData.shapeSelected >= 0 &&
+                        appData.shapeSelected < appData.shapesList.length
+                        ? appData
+                        .shapesList[appData.shapeSelected].position.dy
+                        : 0.0,
+                    min: -2500,
+                    max: 2500,
+                    units: "px",
+                    increment: 1,
+                    decimals: 2,
+                    onValueChanged: (value) {
+                      if (appData.shapeSelected >= 0 &&
+                          appData.shapesList.isNotEmpty &&
+                          appData.shapeSelected < appData.shapesList.length) {
+                        appData.setShapePosition(Offset(
+                          appData
+                              .shapesList[appData.shapeSelected].position.dx,
+                          value,
+                        ));
+                      }
+                    },
+                    enabled: appData.shapeSelected >= 0,
+                  ),
+                ),
+              ]),
+              const SizedBox(height: 8),
+              Text("Stroke and fill:", style: fontBold),
+              const SizedBox(height: 8),
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: labelsWidth,
+                  child: Text("Stroke width:", style: font),
+                ),
+                const SizedBox(width: 4),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: 80,
+                  child: CDKFieldNumeric(
+                    value: appData.newShape.strokeWidth,
+                    min: 0.01,
+                    max: 100,
+                    units: "px",
+                    increment: 0.5,
+                    decimals: 2,
+                    onValueChanged: (value) {
+                      appData.setNewShapeStrokeWidth(value);
+                    },
+                  ),
+                ),
+              ]),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    alignment: Alignment.centerRight,
+                    width: labelsWidth,
+                    child: Text("Stroke color:", style: font),
+                  ),
+                  const SizedBox(width: 4),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: ValueListenableBuilder<Color>(
+                      valueListenable: _valueColorNotifier,
+                      builder: (context, value, child) {
+                        return UtilButtonColor(
+                          key: _anchorColorButton,
+                          color: _valueColorNotifier.value,
+                          onPressed: () {
+                            _showPopoverColor(
+                                context, _anchorColorButton);
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+            ],
+          );
         },
       ),
     );

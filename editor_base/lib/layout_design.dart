@@ -20,7 +20,6 @@ class LayoutDesignState extends State<LayoutDesign> {
   Offset _scrollCenter = const Offset(0, 0);
   bool _isMouseButtonPressed = false;
   final FocusNode _focusNode = FocusNode();
-  bool _isDragging = false;
 
   @override
   void initState() {
@@ -148,7 +147,6 @@ class LayoutDesignState extends State<LayoutDesign> {
                           await appData.selectShapeAtPosition(docPosition,
                               event.localPosition, constraints, _scrollCenter);
                           if (appData.shapeSelected >= 0) {
-                            _isDragging = true;
                           }
                         } else if (appData.toolSelected == "shape_drawing") {
                           appData.addNewShape(docPosition);
@@ -180,8 +178,6 @@ class LayoutDesignState extends State<LayoutDesign> {
                             _scrollCenter,
                           );
                           if (appData.shapeSelected >= 0) {
-                            _isDragging = true;
-
                             // Save the difference for later use
                             appData.mouseToPolygonDifference = Offset(
                               docPosition.dx -
@@ -199,7 +195,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                         setState(() {});
                       },
                       onPointerMove: (event) {
-                        if (_isDragging && appData.shapeSelected >= 0) {
+                        if (appData.shapeSelected >= 0) {
                           Size docSize = Size(
                               appData.docSize.width, appData.docSize.height);
                           Offset docPosition = _getDocPosition(
@@ -209,8 +205,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                               docSize,
                               _scrollCenter);
 
-                          // appData.setShapePosition(docPosition);
-                          appData.setShapePosition(Offset(
+                          appData.shapesList[appData.shapeSelected].setPosition(Offset(
                             docPosition.dx -
                                 appData.mouseToPolygonDifference.dx,
                             docPosition.dy -
@@ -244,11 +239,24 @@ class LayoutDesignState extends State<LayoutDesign> {
                         }
                       },
                       onPointerUp: (event) {
-                        _isDragging = false;
                         _isMouseButtonPressed = false;
                         if (appData.toolSelected == "shape_drawing") {
                           appData.addNewShapeToShapesList();
                         }
+                        Size docSize = Size(
+                            appData.docSize.width, appData.docSize.height);
+                        Offset docPosition = _getDocPosition(
+                            event.localPosition,
+                            appData.zoom,
+                            constraints,
+                            docSize,
+                            _scrollCenter);
+                        appData.setShapePosition(Offset(
+                          docPosition.dx -
+                              appData.mouseToPolygonDifference.dx,
+                          docPosition.dy -
+                              appData.mouseToPolygonDifference.dy,
+                        ));
                         setState(() {});
                       },
                       onPointerSignal: (pointerSignal) {

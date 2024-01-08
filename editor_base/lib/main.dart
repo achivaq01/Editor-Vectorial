@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:editor_base/app_data_actions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cupertino_desktop_kit/cdk.dart';
@@ -41,7 +42,10 @@ void main() async {
           return KeyEventResult.handled;
         } else if ((isControlPressed && isDeletePressed) ||
             (isControlPressed && isBackspacePressed)) {
-          appData.actionManager.erase(appData);
+          if (appData.shapesList.isNotEmpty && appData.shapeSelected >= 0) {
+            appData.actionManager.register(ActionEraseShape(appData, appData.shapesList[appData.shapeSelected]));
+            appData.forceNotifyListeners();
+          }
           return KeyEventResult.handled;
         }
         if (event.logicalKey == LogicalKeyboardKey.altLeft) {

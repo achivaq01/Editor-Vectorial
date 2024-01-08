@@ -28,6 +28,10 @@ class Shape {
     strokeColor = color;
   }
 
+  void setShapePosition(Offset position) {
+    this.position = position;
+  }
+
   // Converteix la forma en un mapa per serialitzar
   Map<String, dynamic> toMap() {
     return {

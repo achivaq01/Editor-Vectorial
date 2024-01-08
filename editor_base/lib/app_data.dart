@@ -139,7 +139,9 @@ class AppData with ChangeNotifier {
 
   void setShapePosition(Offset position) {
     if (shapeSelected >= 0 && shapeSelected < shapesList.length) {
-      shapesList[shapeSelected].setPosition(position);
+      print("moving");
+      actionManager.register(ActionMoveShape(this, shapesList[shapeSelected], shapesList[shapeSelected].position, position));
+      //shapesList[shapeSelected].setPosition(position);
       notifyListeners();
     }
   }
