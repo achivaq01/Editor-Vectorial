@@ -57,7 +57,7 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                 if (appData.shapeSelected >= 0 &&
                     appData.shapesList.isNotEmpty &&
                     appData.shapeSelected < appData.shapesList.length) {
-                  //appData.shapesList[appData.shapeSelected].strokeColor = color;
+                  appData.setShapeSelectedColorTemp(color);
                 }
                 appData.setNewShapeColor(color);
                 //appData.setNewShapeColor(color);

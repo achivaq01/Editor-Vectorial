@@ -21,6 +21,7 @@ class AppData with ChangeNotifier {
   Color newShapeColor = Colors.black;
   Color backgroundColor = Colors.white;
   Color? backgroundColorTemp;
+  Color? shapeSelectedColorTemp;
 
   bool readyExample = false;
   late dynamic dataExample;
@@ -125,11 +126,14 @@ class AppData with ChangeNotifier {
   }
 
   void setShapeSelectedColorTemp(Color color) {
-
+    shapeSelectedColorTemp ??= shapesList[shapeSelected].strokeColor;
+    shapesList[shapeSelected].strokeColor = color;
+    notifyListeners();
   }
 
   void setShapeSelectedColor(Color color) {
-    actionManager.register(ActionModifyShapeColor(this, color, shapesList[shapeSelected].strokeColor, shapeSelected));
+    actionManager.register(ActionModifyShapeColor(this, color, shapeSelectedColorTemp!, shapeSelected));
+    shapeSelectedColorTemp = null;
     notifyListeners();
   }
 
