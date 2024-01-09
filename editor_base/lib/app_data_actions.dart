@@ -102,4 +102,68 @@ class ActionAddNewShape implements Action {
     appData.shapesList.add(newShape);
     appData.forceNotifyListeners();
   }
+
+}
+
+class ActionModifyShapeColor implements Action {
+  final AppData appData;
+  final Color newColor;
+  final Color oldColor;
+  final int shapeIndex;
+
+  ActionModifyShapeColor(this.appData, this.newColor, this.oldColor, this.shapeIndex);
+
+  @override
+  void undo() {
+    appData.shapesList[shapeIndex].strokeColor = oldColor;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void redo() {
+    appData.shapesList[shapeIndex].strokeColor = newColor;
+    appData.forceNotifyListeners();
+  }
+}
+
+class ActionModifyShapeStrokeWidth implements Action {
+  final AppData appData;
+  final double newStroke;
+  final double oldStroke;
+  final int shapeIndex;
+
+  ActionModifyShapeStrokeWidth(this.appData, this.newStroke, this.oldStroke, this.shapeIndex);
+
+  @override
+  void undo() {
+    appData.shapesList[shapeIndex].strokeWidth = oldStroke;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void redo() {
+    appData.shapesList[shapeIndex].strokeWidth = newStroke;
+    appData.forceNotifyListeners();
+  }
+}
+
+class ActionChangeBackgroundColor implements Action {
+  final AppData appData;
+  final Color newColor;
+  final Color? oldColor;
+
+  ActionChangeBackgroundColor(this.appData, this.newColor, this.oldColor);
+
+  @override
+  void redo() {
+    appData.backgroundColor = newColor;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void undo() {
+    appData.backgroundColor = oldColor!;
+    appData.forceNotifyListeners();
+  }
+
 }

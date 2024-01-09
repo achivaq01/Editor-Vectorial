@@ -17,6 +17,10 @@ class AppData with ChangeNotifier {
   List<Shape> shapesList = [];
   int shapeSelected = -1;
   int shapeSelectedPrevious = -1;
+  double newShapeStrokeWidth = 1;
+  Color newShapeColor = Colors.black;
+  Color backgroundColor = Colors.white;
+  Color? backgroundColorTemp;
 
   bool readyExample = false;
   late dynamic dataExample;
@@ -105,8 +109,39 @@ class AppData with ChangeNotifier {
     }
   }
 
+  void setSelectedShapeStrokeWidth(double value) {
+    actionManager.register(ActionModifyShapeStrokeWidth(this, value, shapesList[shapeSelected].strokeWidth, shapeSelected));
+    notifyListeners();
+  }
+
   void setNewShapeStrokeWidth(double value) {
     newShape.setStrokeWidth(value);
+    notifyListeners();
+  }
+
+  void setNewShapeColor(Color color) {
+    newShapeColor = color;
+    notifyListeners();
+  }
+
+  void setShapeSelectedColorTemp(Color color) {
+
+  }
+
+  void setShapeSelectedColor(Color color) {
+    actionManager.register(ActionModifyShapeColor(this, color, shapesList[shapeSelected].strokeColor, shapeSelected));
+    notifyListeners();
+  }
+
+  void setBackgroundColorTemp(Color color) {
+    backgroundColorTemp ??= backgroundColor;
+    backgroundColor = color;
+    notifyListeners();
+  }
+
+  void setBackgroundColor(Color color) {
+    actionManager.register(ActionChangeBackgroundColor(this, color, backgroundColorTemp));
+    backgroundColorTemp = null;
     notifyListeners();
   }
 }

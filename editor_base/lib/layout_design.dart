@@ -148,6 +148,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                         }
                         if (appData.toolSelected == "shape_drawing") {
                           appData.addNewShape(docPosition);
+                          appData.shapeSelected = -1;
                         }
                         setState(() {});
                       },
