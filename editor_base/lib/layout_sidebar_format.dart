@@ -99,8 +99,13 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                   alignment: Alignment.centerLeft,
                   width: 80,
                   child: CDKFieldNumeric(
-                    value: appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty ? appData.shapesList[appData.shapeSelected].position.dx : 0,
-                    min: 0.01,
+                    value: appData.shapeSelected >= 0
+                        && appData.shapesList.isNotEmpty
+                        && appData.shapesList[appData.shapeSelected].position.dx > 0
+                        && appData.shapesList[appData.shapeSelected].position.dx <= appData.docSize.width
+                        ? appData.shapesList[appData.shapeSelected].position.dx
+                        : 0,
+                    min: 0,
                     max: appData.docSize.height > appData.docSize.width ? appData.docSize.height : appData.docSize.width,
                     units: "px",
                     increment: 0.5,
@@ -126,9 +131,14 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                   alignment: Alignment.centerLeft,
                   width: 80,
                   child: CDKFieldNumeric(
-                    value: appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty ? appData.shapesList[appData.shapeSelected].position.dy : 0,
-                    min: 0.01,
-                    max: 1000000,
+                    value: appData.shapeSelected >= 0
+                        && appData.shapesList.isNotEmpty
+                        && appData.shapesList[appData.shapeSelected].position.dy > 0
+                        && appData.shapesList[appData.shapeSelected].position.dy <= appData.docSize.height
+                        ? appData.shapesList[appData.shapeSelected].position.dy
+                        : 0,
+                    min: 0,
+                    max: appData.docSize.height > appData.docSize.width ? appData.docSize.height : appData.docSize.width,
                     units: "px",
                     increment: 0.5,
                     decimals: 2,
@@ -161,8 +171,8 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                         && appData.shapeSelected < appData.shapesList.length
                         ? appData.shapesList[appData.shapeSelected].strokeWidth
                         : appData.newShape.strokeWidth,
-                    min: 0.01,
-                    max: 1000000,
+                    min: 0,
+                    max: 100,
                     units: "px",
                     increment: 0.5,
                     decimals: 2,

@@ -151,6 +151,9 @@ class AppData with ChangeNotifier {
   }
 
   void setShapeSelectedPosition(Offset offset) {
+    if (shapeSelectedPositionTemp == null) {
+      return;
+    }
     actionManager.register(ActionChangeShapeSelectedPosition(this, offset, shapeSelectedPositionTemp!, shapeSelected));
     shapesList[shapeSelected].position = offset;
     notifyListeners();

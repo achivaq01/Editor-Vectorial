@@ -76,8 +76,7 @@ class LayoutDesignState extends State<LayoutDesign> {
 
       if (_keyScrollX.currentState != null) {
         if (scrollArea.width < constraints.maxWidth) {
-          _keyScrollX.currentState!.setOffset(0);
-        } else {
+          _keyScrollX.currentState!.setOffset(0);        } else {
           tmpScrollX = _keyScrollX.currentState!.getOffset() *
               (scrollDisplacement.dx * 100 / appData.zoom);
         }
