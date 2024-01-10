@@ -22,6 +22,7 @@ class AppData with ChangeNotifier {
   Color backgroundColor = Colors.white;
   Color? backgroundColorTemp;
   Color? shapeSelectedColorTemp;
+  Offset? shapeSelectedPositionTemp;
 
   bool readyExample = false;
   late dynamic dataExample;
@@ -150,7 +151,13 @@ class AppData with ChangeNotifier {
   }
 
   void setShapeSelectedPosition(Offset offset) {
-    actionManager.register(ActionChangeShapeSelectedPosition(this, offset, shapesList[shapeSelected].position, shapeSelected));
+    actionManager.register(ActionChangeShapeSelectedPosition(this, offset, shapeSelectedPositionTemp!, shapeSelected));
+    shapesList[shapeSelected].position = offset;
+    notifyListeners();
+  }
+
+  void setShapeSelectedPositionTemp(Offset offset) {
+    shapeSelectedPositionTemp ??= shapesList[shapeSelected].position;
     shapesList[shapeSelected].position = offset;
     notifyListeners();
   }
