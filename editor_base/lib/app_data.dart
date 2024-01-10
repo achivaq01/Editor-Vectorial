@@ -148,4 +148,10 @@ class AppData with ChangeNotifier {
     backgroundColorTemp = null;
     notifyListeners();
   }
+
+  void setShapeSelectedPosition(Offset offset) {
+    actionManager.register(ActionChangeShapeSelectedPosition(this, offset, shapesList[shapeSelected].position, shapeSelected));
+    shapesList[shapeSelected].position = offset;
+    notifyListeners();
+  }
 }

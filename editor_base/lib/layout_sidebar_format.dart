@@ -86,6 +86,62 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text("Coordinates", style: fontBold),
+              const SizedBox(height: 8),
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: labelsWidth,
+                  child: Text("Offset X: ", style: font),
+                ),
+                const SizedBox(width: 4),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: 80,
+                  child: CDKFieldNumeric(
+                    value: appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty ? appData.shapesList[appData.shapeSelected].position.dx : 0,
+                    min: 0.01,
+                    max: appData.docSize.height > appData.docSize.width ? appData.docSize.height : appData.docSize.width,
+                    units: "px",
+                    increment: 0.5,
+                    decimals: 2,
+                    onValueChanged: (value) {
+                      if (appData.shapeSelected >= 0 &&
+                          appData.shapesList.isNotEmpty &&
+                          appData.shapeSelected < appData.shapesList.length) {
+                        appData.setShapeSelectedPosition((Offset(value, appData.shapesList[appData.shapeSelected].position.dy)));
+                      }
+                    },
+                  ),
+                ),
+              ]),
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: labelsWidth,
+                  child: Text("Offset Y: ", style: font),
+                ),
+                const SizedBox(width: 4),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: 80,
+                  child: CDKFieldNumeric(
+                    value: appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty ? appData.shapesList[appData.shapeSelected].position.dy : 0,
+                    min: 0.01,
+                    max: 1000000,
+                    units: "px",
+                    increment: 0.5,
+                    decimals: 2,
+                    onValueChanged: (value) {
+                      if (appData.shapeSelected >= 0 &&
+                          appData.shapesList.isNotEmpty &&
+                          appData.shapeSelected < appData.shapesList.length) {
+                        appData.setShapeSelectedPosition((Offset(appData.shapesList[appData.shapeSelected].position.dx, value)));
+                      }
+                    },
+                  ),
+                ),
+              ]),
               const SizedBox(height: 8),
               Text("Stroke and fill:", style: fontBold),
               const SizedBox(height: 8),
@@ -100,9 +156,13 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                   alignment: Alignment.centerLeft,
                   width: 80,
                   child: CDKFieldNumeric(
-                    value: appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty ? appData.shapesList[appData.shapeSelected].strokeWidth : appData.newShape.strokeWidth,
+                    value: appData.shapeSelected >= 0
+                        && appData.shapesList.isNotEmpty
+                        && appData.shapeSelected < appData.shapesList.length
+                        ? appData.shapesList[appData.shapeSelected].strokeWidth
+                        : appData.newShape.strokeWidth,
                     min: 0.01,
-                    max: 100,
+                    max: 1000000,
                     units: "px",
                     increment: 0.5,
                     decimals: 2,

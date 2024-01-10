@@ -186,3 +186,25 @@ class ActionDeleteSelectedShape implements Action {
     appData.forceNotifyListeners();
   }
 }
+
+class ActionChangeShapeSelectedPosition implements Action {
+  final AppData appData;
+  final Offset newOffset;
+  final Offset oldOffset;
+  final int shapeIndex;
+
+  ActionChangeShapeSelectedPosition(this.appData, this.newOffset, this.oldOffset, this.shapeIndex);
+
+  @override
+  void redo() {
+    appData.shapesList[shapeIndex].position = newOffset;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void undo() {
+    appData.shapesList[shapeIndex].position = oldOffset;
+    appData.forceNotifyListeners();
+  }
+
+}
