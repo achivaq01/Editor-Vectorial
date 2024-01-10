@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'app_click_selector.dart';
 import 'app_data_actions.dart';
 import 'util_shape.dart';
@@ -162,6 +165,19 @@ class AppData with ChangeNotifier {
   void setShapeSelectedPositionTemp(Offset offset) {
     shapeSelectedPositionTemp ??= shapesList[shapeSelected].position;
     shapesList[shapeSelected].position = offset;
+    notifyListeners();
+  }
+
+  void addShapeFromClipboardData() async {
+    ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+    Map<String, dynamic>? parsedJson = jsonDecode(data!.text!.toString());
+    if (parsedJson == null || !parsedJson.containsKey('type')) {
+      return;
+    }
+    if (parsedJson['type'] != 'shape_drawing') {
+      return;
+    }
+    actionManager.register(ActionAddNewShape(this, Shape.fromMap(parsedJson)));
     notifyListeners();
   }
 }

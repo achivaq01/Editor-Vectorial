@@ -99,10 +99,9 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                   alignment: Alignment.centerLeft,
                   width: 80,
                   child: CDKFieldNumeric(
-                    value: appData.shapeSelected >= 0
-                        && appData.shapesList.isNotEmpty
-                        && appData.shapesList[appData.shapeSelected].position.dx > 0
-                        && appData.shapesList[appData.shapeSelected].position.dx <= appData.docSize.width
+                    value: appData.shapeSelected >= 0 &&
+                        appData.shapeSelected < appData.shapesList.length &&
+                        appData.shapesList.isNotEmpty
                         ? appData.shapesList[appData.shapeSelected].position.dx
                         : 0,
                     min: 0,

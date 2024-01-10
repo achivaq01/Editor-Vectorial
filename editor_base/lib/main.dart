@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:editor_base/app_data_actions.dart';
 import 'package:flutter/material.dart';
@@ -43,10 +44,10 @@ void main() async {
           return KeyEventResult.handled;
         }
         if (isControlPressed && isCPressed && appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty && appData.shapesList.length >= appData.shapeSelected) {
-          Clipboard.setData(ClipboardData(text: appData.shapesList[appData.shapeSelected].toMap().toString()));
+          Clipboard.setData(ClipboardData(text: jsonEncode(appData.shapesList[appData.shapeSelected].toMap())));
         }
         if (isControlPressed && isVPressed && appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty && appData.shapesList.length >= appData.shapeSelected) {
-          Clipboard.setData(ClipboardData(text: appData.shapesList[appData.shapeSelected].toMap().toString()));
+          appData.addShapeFromClipboardData();
         }
         if (event.logicalKey == LogicalKeyboardKey.altLeft) {
           appData.isAltOptionKeyPressed = true;
