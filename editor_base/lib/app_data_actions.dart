@@ -167,3 +167,22 @@ class ActionChangeBackgroundColor implements Action {
   }
 
 }
+
+class ActionDeleteSelectedShape implements Action {
+  final AppData appData;
+  final Shape shape;
+
+  ActionDeleteSelectedShape(this.appData, this.shape);
+
+  @override
+  void redo() {
+    appData.shapesList.remove(shape);
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void undo() {
+    appData.shapesList.add(shape);
+    appData.forceNotifyListeners();
+  }
+}

@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:editor_base/app_data_actions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cupertino_desktop_kit/cdk.dart';
@@ -29,6 +30,7 @@ void main() async {
           (Platform.isWindows && event.isControlPressed);
       bool isShiftPressed = event.isShiftPressed;
       bool isZPressed = event.logicalKey == LogicalKeyboardKey.keyZ;
+      bool isSuprPressed = event.logicalKey == LogicalKeyboardKey.delete;
 
       if (event is RawKeyDownEvent) {
         if (isControlPressed && isZPressed && !isShiftPressed) {
@@ -40,6 +42,10 @@ void main() async {
         }
         if (event.logicalKey == LogicalKeyboardKey.altLeft) {
           appData.isAltOptionKeyPressed = true;
+        }
+        if (isControlPressed && isSuprPressed && appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty) {
+          appData.actionManager.register(ActionDeleteSelectedShape(appData, appData.shapesList[appData.shapeSelected]));
+          appData.shapeSelected = -1;
         }
       } else if (event is RawKeyUpEvent) {
         if (event.logicalKey == LogicalKeyboardKey.altLeft) {
