@@ -31,6 +31,8 @@ void main() async {
       bool isShiftPressed = event.isShiftPressed;
       bool isZPressed = event.logicalKey == LogicalKeyboardKey.keyZ;
       bool isSuprPressed = event.logicalKey == LogicalKeyboardKey.delete;
+      bool isCPressed = event.logicalKey == LogicalKeyboardKey.keyC;
+      bool isVPressed = event.logicalKey == LogicalKeyboardKey.keyV;
 
       if (event is RawKeyDownEvent) {
         if (isControlPressed && isZPressed && !isShiftPressed) {
@@ -39,6 +41,12 @@ void main() async {
         } else if (isControlPressed && isShiftPressed && isZPressed) {
           appData.actionManager.redo();
           return KeyEventResult.handled;
+        }
+        if (isControlPressed && isCPressed && appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty && appData.shapesList.length >= appData.shapeSelected) {
+          Clipboard.setData(ClipboardData(text: appData.shapesList[appData.shapeSelected].toMap().toString()));
+        }
+        if (isControlPressed && isVPressed && appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty && appData.shapesList.length >= appData.shapeSelected) {
+          Clipboard.setData(ClipboardData(text: appData.shapesList[appData.shapeSelected].toMap().toString()));
         }
         if (event.logicalKey == LogicalKeyboardKey.altLeft) {
           appData.isAltOptionKeyPressed = true;
