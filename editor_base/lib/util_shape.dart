@@ -5,6 +5,7 @@ class Shape {
   List<Offset> vertices = [];
   double strokeWidth = 1;
   Color strokeColor = const Color(0xFF000000);
+  bool closed = false;
 
   Shape();
 
@@ -61,5 +62,12 @@ class Shape {
     strokeColor = color;
   }
 
+  void setClosed() {
+    closed = !closed;
+  }
+
+  bool isClosed() {
+    return closed;
+  }
 
 }

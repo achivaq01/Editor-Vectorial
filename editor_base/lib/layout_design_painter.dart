@@ -162,6 +162,9 @@ class LayoutDesignPainter extends CustomPainter {
         y = shape.position.dy + shape.vertices[i].dy;
         path.lineTo(x, y);
       }
+      if (shape.closed) {
+        path.close();
+      }
       canvas.drawPath(path, paint);
     }
   }

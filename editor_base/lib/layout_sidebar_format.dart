@@ -18,6 +18,7 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
   final GlobalKey<CDKDialogPopoverState> _anchorColorButton = GlobalKey();
   final ValueNotifier<Color> _valueColorNotifier =
   ValueNotifier(const Color(0x800080FF));
+  final ValueNotifier<bool> _valueShapeClosedNotifier = ValueNotifier(false);
 
   _showPopoverColor(BuildContext context, GlobalKey anchorKey) {
     AppData appData = Provider.of<AppData>(context, listen: false);
@@ -186,6 +187,44 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                   ),
                 ),
               ]),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    alignment: Alignment.centerRight,
+                    width: labelsWidth,
+                    child: Text("Close shape:", style: font),
+                  ),
+                  const SizedBox(width: 4),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: ValueListenableBuilder<bool>(
+                      valueListenable: _valueShapeClosedNotifier,
+                      builder: (context, value, child) {
+                        return CDKButtonCheckBox(
+                            value: appData.shapeSelected >= 0 &&
+                                appData.shapesList.isNotEmpty &&
+                                appData.shapeSelected < appData.shapesList.length ?
+                                appData.shapesList[appData.shapeSelected].closed :
+                                appData.newShape.closed,
+                            onChanged: (value) {
+                              if (appData.shapeSelected >= 0 &&
+                                  appData.shapesList.isNotEmpty &&
+                                  appData.shapeSelected < appData.shapesList.length) {
+                                appData.shapesList[appData.shapeSelected].setClosed();
+                                appData.forceNotifyListeners();
+                              } else {
+                                appData.newShape.setClosed();
+                                appData.forceNotifyListeners();
+                              }
+                              _valueShapeClosedNotifier.value = !_valueShapeClosedNotifier.value;
+                            },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
