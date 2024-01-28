@@ -1,11 +1,7 @@
-import 'dart:math';
-
-import 'package:editor_base/util_shape.dart';
-import 'package:editor_base/util_shape_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'util_item_shape.dart';
 import 'app_data.dart';
-import 'layout_design_painter.dart';
 
 class LayoutSidebarShapes extends StatelessWidget {
   const LayoutSidebarShapes({super.key});
@@ -27,12 +23,9 @@ class LayoutSidebarShapes extends StatelessWidget {
                 itemExtent: 110,
                 itemCount: appData.shapesList.length,
                 itemBuilder: (context, index) {
-                  return ItemShape(
-                      shapeIndex: index
-                  );
+                  return ItemShape(shapeIndex: index);
                 },
               ),
-
             ),
           ],
         ),

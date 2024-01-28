@@ -19,8 +19,9 @@ class LayoutDesignState extends State<LayoutDesign> {
   final GlobalKey<UtilCustomScrollVerticalState> _keyScrollY = GlobalKey();
   Offset _scrollCenter = const Offset(0, 0);
   bool _isMouseButtonPressed = false;
+  late Offset _dragStartPosition;
+  late Offset _dragStartOffset;
   final FocusNode _focusNode = FocusNode();
-  bool _isDragging = false;
 
   @override
   void initState() {
@@ -72,6 +73,7 @@ class LayoutDesignState extends State<LayoutDesign> {
 
       double tmpScrollX = _scrollCenter.dx;
       double tmpScrollY = _scrollCenter.dy;
+
       if (_keyScrollX.currentState != null) {
         if (scrollArea.width < constraints.maxWidth) {
           _keyScrollX.currentState!.setOffset(0);
@@ -137,62 +139,36 @@ class LayoutDesignState extends State<LayoutDesign> {
                         _isMouseButtonPressed = true;
                         Size docSize =
                             Size(appData.docSize.width, appData.docSize.height);
-
-                        // Calculate the initial difference between mouse and polygon position
                         Offset docPosition = _getDocPosition(
-                          event.localPosition,
-                          appData.zoom,
-                          constraints,
-                          docSize,
-                          _scrollCenter,
-                        );
-
-                        if (appData.toolSelected == "pointer_shapes") {
-                          await appData.selectShapeAtPosition(
-                            docPosition,
                             event.localPosition,
+                            appData.zoom,
                             constraints,
-                            _scrollCenter,
-                          );
-                          if (appData.shapeSelected >= 0) {
-                            _isDragging = true;
-
-                            // Save the difference for later use
-                            appData.mouseToPolygonDifference = Offset(
-                              docPosition.dx -
-                                  appData.shapesList[appData.shapeSelected]
-                                      .position.dx,
-                              docPosition.dy -
-                                  appData.shapesList[appData.shapeSelected]
-                                      .position.dy,
-                            );
+                            docSize,
+                            _scrollCenter);
+                        if (appData.toolSelected == "pointer_shapes") {
+                          await appData.selectShapeAtPosition(docPosition,
+                              event.localPosition, constraints, _scrollCenter);
+                          if (appData.shapeSelected != -1) {
+                            _dragStartPosition = appData
+                                .shapesList[appData.shapeSelected].position;
+                            _dragStartOffset = docPosition - _dragStartPosition;
                           }
-                        } else if (appData.toolSelected == "shape_drawing") {
-                          appData.addNewShape(docPosition);
                         }
-
+                        if (appData.toolSelected == "shape_drawing") {
+                          appData.addNewShape(docPosition);
+                          appData.shapeSelected = -1;
+                        }
                         setState(() {});
                       },
                       onPointerMove: (event) {
-                        if (_isDragging && appData.shapeSelected >= 0) {
-                          Size docSize = Size(
-                              appData.docSize.width, appData.docSize.height);
-                          Offset docPosition = _getDocPosition(
-                              event.localPosition,
-                              appData.zoom,
-                              constraints,
-                              docSize,
-                              _scrollCenter);
-
-                          appData.setShapePosition(Offset(
-                            docPosition.dx -
-                                appData.mouseToPolygonDifference.dx,
-                            docPosition.dy -
-                                appData.mouseToPolygonDifference.dy,
-                          ));
-
-                          setState(() {});
-                        }
+                        Size docSize =
+                            Size(appData.docSize.width, appData.docSize.height);
+                        Offset docPosition = _getDocPosition(
+                            event.localPosition,
+                            appData.zoom,
+                            constraints,
+                            docSize,
+                            _scrollCenter);
                         if (_isMouseButtonPressed) {
                           if (appData.toolSelected == "shape_drawing") {
                             Size docSize = Size(
@@ -216,12 +192,24 @@ class LayoutDesignState extends State<LayoutDesign> {
                                 .setTrackpadDelta(event.delta.dy);
                           }
                         }
+
+                        if (appData.toolSelected == "pointer_shapes" &&
+                            appData.shapeSelected != -1) {
+                          Offset newShapePosition =
+                              docPosition - _dragStartOffset;
+                          appData
+                              .setShapeSelectedPositionTemp(newShapePosition);
+                        }
                       },
                       onPointerUp: (event) {
-                        _isDragging = false;
                         _isMouseButtonPressed = false;
                         if (appData.toolSelected == "shape_drawing") {
                           appData.addNewShapeToShapesList();
+                        }
+                        if (appData.toolSelected == "pointer_shapes" &&
+                            appData.shapeSelected != -1) {
+                          appData.setShapeSelectedPosition(appData
+                              .shapesList[appData.shapeSelected].position);
                         }
                         setState(() {});
                       },

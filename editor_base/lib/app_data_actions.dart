@@ -7,7 +7,6 @@ import 'util_shape.dart';
 abstract class Action {
   void undo();
   void redo();
-  void erase();
 }
 
 // Gestiona la llista d'accions per poder desfer i refer
@@ -38,15 +37,6 @@ class ActionManager {
       actions[currentIndex].redo();
     }
   }
-
-  void erase(AppData appData) {
-    if (appData.shapeSelected >= 0) {
-      appData.shapesList.removeAt(appData.shapeSelected);
-      appData.shapeSelected = -1;
-      appData.forceNotifyListeners();
-      // appData.notifyListeners();
-    }
-  }
 }
 
 class ActionSetDocWidth implements Action {
@@ -70,9 +60,6 @@ class ActionSetDocWidth implements Action {
   void redo() {
     _action(newValue);
   }
-
-  @override
-  void erase() {}
 }
 
 class ActionSetDocHeight implements Action {
@@ -96,9 +83,6 @@ class ActionSetDocHeight implements Action {
   void redo() {
     _action(newValue);
   }
-
-  @override
-  void erase() {}
 }
 
 class ActionAddNewShape implements Action {
@@ -109,12 +93,6 @@ class ActionAddNewShape implements Action {
 
   @override
   void undo() {
-    /*
-    if (appData.shapesList[appData.shapeSelected] == newShape) {
-      appData.shapeSelected = -1;
-    }
-    */
-    appData.shapeSelected = -1;
     appData.shapesList.remove(newShape);
     appData.forceNotifyListeners();
   }
@@ -125,24 +103,56 @@ class ActionAddNewShape implements Action {
     appData.forceNotifyListeners();
   }
 
+}
+
+class ActionModifyShapeColor implements Action {
+  final AppData appData;
+  final Color newColor;
+  final Color oldColor;
+  final int shapeIndex;
+
+  ActionModifyShapeColor(this.appData, this.newColor, this.oldColor, this.shapeIndex);
+
   @override
-  void erase() {
-    if (appData.shapesList.isEmpty) {
-      return;
-    }
-    if (appData.shapeSelected >= 0) {
-      appData.shapesList.remove(appData.shapesList[appData.shapeSelected]);
-      appData.forceNotifyListeners();
-    }
+  void undo() {
+    appData.shapesList[shapeIndex].strokeColor = oldColor;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void redo() {
+    appData.shapesList[shapeIndex].strokeColor = newColor;
+    appData.forceNotifyListeners();
   }
 }
 
-class ActionSetDocColor implements Action {
+class ActionModifyShapeStrokeWidth implements Action {
   final AppData appData;
-  final Color previousColor;
-  final Color newColor;
+  final double newStroke;
+  final double oldStroke;
+  final int shapeIndex;
 
-  ActionSetDocColor(this.appData, this.previousColor, this.newColor);
+  ActionModifyShapeStrokeWidth(this.appData, this.newStroke, this.oldStroke, this.shapeIndex);
+
+  @override
+  void undo() {
+    appData.shapesList[shapeIndex].strokeWidth = oldStroke;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void redo() {
+    appData.shapesList[shapeIndex].strokeWidth = newStroke;
+    appData.forceNotifyListeners();
+  }
+}
+
+class ActionChangeBackgroundColor implements Action {
+  final AppData appData;
+  final Color newColor;
+  final Color? oldColor;
+
+  ActionChangeBackgroundColor(this.appData, this.newColor, this.oldColor);
 
   @override
   void redo() {
@@ -152,35 +162,49 @@ class ActionSetDocColor implements Action {
 
   @override
   void undo() {
-    appData.backgroundColor = previousColor;
+    appData.backgroundColor = oldColor!;
     appData.forceNotifyListeners();
   }
 
-  @override
-  void erase() {}
 }
 
-class ActionMoveShape implements Action {
+class ActionDeleteSelectedShape implements Action {
   final AppData appData;
-  final Shape movedShape;
-  final Offset previousPosition;
-  final Offset newPosition;
+  final Shape shape;
 
-  ActionMoveShape(
-      this.appData, this.movedShape, this.previousPosition, this.newPosition);
-
-  @override
-  void undo() {
-    movedShape.position = previousPosition;
-    appData.forceNotifyListeners();
-  }
+  ActionDeleteSelectedShape(this.appData, this.shape);
 
   @override
   void redo() {
-    movedShape.position = newPosition;
+    appData.shapesList.remove(shape);
     appData.forceNotifyListeners();
   }
 
   @override
-  void erase() {}
+  void undo() {
+    appData.shapesList.add(shape);
+    appData.forceNotifyListeners();
+  }
+}
+
+class ActionChangeShapeSelectedPosition implements Action {
+  final AppData appData;
+  final Offset newOffset;
+  final Offset oldOffset;
+  final int shapeIndex;
+
+  ActionChangeShapeSelectedPosition(this.appData, this.newOffset, this.oldOffset, this.shapeIndex);
+
+  @override
+  void redo() {
+    appData.shapesList[shapeIndex].position = newOffset;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void undo() {
+    appData.shapesList[shapeIndex].position = oldOffset;
+    appData.forceNotifyListeners();
+  }
+
 }

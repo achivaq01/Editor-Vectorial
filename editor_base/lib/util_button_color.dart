@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cupertino_desktop_kit/cdk.dart';
 
-// Copyright © 2023 Albert Palacios. All Rights Reserved.
-// Licensed under the BSD 3-clause license, see LICENSE file for details.
-
 class UtilButtonColor extends StatefulWidget {
   final VoidCallback? onPressed;
   final Color color;
   final bool enabled;
+  final Color containerColor;
 
   const UtilButtonColor({
     Key? key,
     this.onPressed,
     required this.color,
     this.enabled = true,
+    required this.containerColor,
   }) : super(key: key);
 
   @override
@@ -21,7 +20,6 @@ class UtilButtonColor extends StatefulWidget {
 }
 
 class UtilButtonColorState extends State<UtilButtonColor> {
-  // Flag to track if the button is currently pressed.
   bool _isPressed = false;
   bool _isHovered = false;
 
@@ -47,7 +45,6 @@ class UtilButtonColorState extends State<UtilButtonColor> {
                 ? CDKTheme.grey800
                 : CDKTheme.grey600;
 
-    // Define styles and themes based on the button's state and style.
     BoxDecoration decoration;
 
     BoxShadow shadow = BoxShadow(
@@ -57,70 +54,73 @@ class UtilButtonColorState extends State<UtilButtonColor> {
       offset: const Offset(0, 1),
     );
 
-    // Styling logic depending on the button's style and state.
     decoration = BoxDecoration(
-        color: theme.backgroundSecondary0,
-        borderRadius: BorderRadius.circular(6.0),
-        boxShadow: [shadow]);
+      color: theme.backgroundSecondary0,
+      borderRadius: BorderRadius.circular(6.0),
+      boxShadow: [shadow],
+    );
 
     return GestureDetector(
-        onTapDown: !widget.enabled
-            ? null
-            : (details) => setState(() => _isPressed = true),
-        onTapUp: !widget.enabled
-            ? null
-            : (details) => setState(() => _isPressed = false),
-        onTap: widget.onPressed,
-        child: MouseRegion(
-          onEnter: (event) => setState(() => _isHovered = true),
-          onExit: (event) => setState(() => _isHovered = false),
-          child: SizedBox(
-            width: 65,
-            height: 22,
-            child: Stack(
-              children: [
-                DecoratedBox(
-                  decoration: decoration,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6.0),
-                    child: CustomPaint(
-                      painter: CDKUtilShaderGrid(7),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(color: widget.color),
+      onTapDown: !widget.enabled
+          ? null
+          : (details) => setState(() => _isPressed = true),
+      onTapUp: !widget.enabled
+          ? null
+          : (details) => setState(() => _isPressed = false),
+      onTap: widget.onPressed,
+      child: MouseRegion(
+        onEnter: (event) => setState(() => _isHovered = true),
+        onExit: (event) => setState(() => _isHovered = false),
+        child: SizedBox(
+          width: 65,
+          height: 22,
+          child: Stack(
+            children: [
+              DecoratedBox(
+                decoration: decoration,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(6.0),
+                  child: CustomPaint(
+                    painter: CDKUtilShaderGrid(7),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            color: widget.containerColor,
                           ),
-                          Container(
-                            width: 20,
-                            color: Color(widget.color.value | 0xFF000000),
-                          ),
-                        ],
-                      ),
+                        ),
+                        Container(
+                          width: 20,
+                          color: widget.containerColor,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: colorBorder, width: 1),
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: colorBorder, width: 1),
+                  borderRadius: BorderRadius.circular(6.0),
                 ),
-                Positioned.fill(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: SizedBox(
-                      width: 20,
-                      child: IconTheme(
-                        data: const IconThemeData(size: 12),
-                        child:
-                            Icon(CupertinoIcons.chevron_down, color: colorIcon),
-                      ),
+              ),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: SizedBox(
+                    width: 20,
+                    child: IconTheme(
+                      data: const IconThemeData(size: 12),
+                      child:
+                          Icon(CupertinoIcons.chevron_down, color: colorIcon),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

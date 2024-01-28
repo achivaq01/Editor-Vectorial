@@ -25,7 +25,7 @@ class LayoutDesignPainter extends CustomPainter {
     const double size = 5.0;
     int matSize = 4;
     List<List<double>> matIdent =
-        List.generate(matSize, (_) => List.filled(matSize, 0.0));
+    List.generate(matSize, (_) => List.filled(matSize, 0.0));
     for (int i = 0; i < matSize; i++) {
       matIdent[i][i] = 1.0;
     }
@@ -162,6 +162,9 @@ class LayoutDesignPainter extends CustomPainter {
         y = shape.position.dy + shape.vertices[i].dy;
         path.lineTo(x, y);
       }
+      if (shape.closed) {
+        path.close();
+      }
       canvas.drawPath(path, paint);
     }
   }
@@ -234,7 +237,12 @@ class LayoutDesignPainter extends CustomPainter {
 
     // Dibuixa el poligon que s'està afegint (relatiu a la seva posició)
     Shape shape = appData.newShape;
-    shape.strokeColor = appData.getNewShapeColor();
+    if (appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty) {
+      appData.newShapeColor = appData.shapesList[appData.shapeSelected].strokeColor;
+      appData.newShapeStrokeWidth = appData.shapesList[appData.shapeSelected].strokeWidth;
+    }
+    shape.strokeColor = appData.newShapeColor;
+    shape.strokeWidth = appData.newShapeStrokeWidth;
     paintShape(canvas, shape);
 
     // Restaura l'estat previ a l'escalat i translació

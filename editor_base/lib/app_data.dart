@@ -1,5 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_cupertino_desktop_kit/cdk_theme.dart';
+import 'package:flutter/services.dart';
 import 'app_click_selector.dart';
 import 'app_data_actions.dart';
 import 'util_shape.dart';
@@ -18,20 +20,16 @@ class AppData with ChangeNotifier {
   List<Shape> shapesList = [];
   int shapeSelected = -1;
   int shapeSelectedPrevious = -1;
+  double newShapeStrokeWidth = 1;
+  Color newShapeColor = Colors.black;
+  Color newFillColor = Colors.transparent;
+  Color backgroundColor = Colors.white;
+  Color? backgroundColorTemp;
+  Color? shapeSelectedColorTemp;
+  Offset? shapeSelectedPositionTemp;
 
   bool readyExample = false;
   late dynamic dataExample;
-
-  Color backgroundColor = Colors.white;
-  Color _newShapeColor = Colors.black;
-  Color selectedCardColor = CDKTheme.cyan;
-
-  Offset mouseToPolygonDifference = Offset.zero;
-
-  void setBackgroundColor(Color color) {
-    actionManager.register(ActionSetDocColor(this, backgroundColor, color));
-    notifyListeners();
-  }
 
   void forceNotifyListeners() {
     super.notifyListeners();
@@ -99,7 +97,6 @@ class AppData with ChangeNotifier {
   void addNewShape(Offset position) {
     newShape.setPosition(position);
     newShape.addPoint(const Offset(0, 0));
-    shapeSelected = shapesList.length - 1;
     notifyListeners();
   }
 
@@ -118,38 +115,74 @@ class AppData with ChangeNotifier {
     }
   }
 
+  void setSelectedShapeStrokeWidth(double value) {
+    actionManager.register(ActionModifyShapeStrokeWidth(
+        this, value, shapesList[shapeSelected].strokeWidth, shapeSelected));
+    notifyListeners();
+  }
+
   void setNewShapeStrokeWidth(double value) {
     newShape.setStrokeWidth(value);
     notifyListeners();
   }
 
   void setNewShapeColor(Color color) {
-    _newShapeColor = color;
+    newShapeColor = color;
     notifyListeners();
   }
 
-  Color getNewShapeColor() {
-    return _newShapeColor;
-  }
-
-  void setShapeColor(int shapeId, Color color) {
-    shapesList[shapeId].strokeColor = color;
+  void setShapeSelectedColorTemp(Color color) {
+    shapeSelectedColorTemp ??= shapesList[shapeSelected].strokeColor;
+    shapesList[shapeSelected].strokeColor = color;
     notifyListeners();
   }
 
-  void setShapePosition(Offset position) {
-    if (shapeSelected >= 0 && shapeSelected < shapesList.length) {
-      shapesList[shapeSelected].setPosition(position);
-      notifyListeners();
-    }
+  void setShapeSelectedColor(Color color) {
+    actionManager.register(ActionModifyShapeColor(
+        this, color, shapeSelectedColorTemp!, shapeSelected));
+    shapeSelectedColorTemp = null;
+    notifyListeners();
   }
 
-  void updateShapePosition(Offset delta) {
-    if (shapeSelected >= 0 && shapeSelected < shapesList.length) {
-      shapesList[shapeSelected].position += delta;
-      notifyListeners();
-    } else {
-      setShapeSelected(0);
+  void setBackgroundColorTemp(Color color) {
+    backgroundColorTemp ??= backgroundColor;
+    backgroundColor = color;
+    notifyListeners();
+  }
+
+  void setBackgroundColor(Color color) {
+    actionManager.register(
+        ActionChangeBackgroundColor(this, color, backgroundColorTemp));
+    backgroundColorTemp = null;
+    notifyListeners();
+  }
+
+  void setShapeSelectedPosition(Offset offset) {
+    if (shapeSelectedPositionTemp == null) {
+      return;
     }
+    actionManager.register(ActionChangeShapeSelectedPosition(
+        this, offset, shapeSelectedPositionTemp!, shapeSelected));
+    shapesList[shapeSelected].position = offset;
+    notifyListeners();
+  }
+
+  void setShapeSelectedPositionTemp(Offset offset) {
+    shapeSelectedPositionTemp ??= shapesList[shapeSelected].position;
+    shapesList[shapeSelected].position = offset;
+    notifyListeners();
+  }
+
+  void addShapeFromClipboardData() async {
+    ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+    Map<String, dynamic>? parsedJson = jsonDecode(data!.text!.toString());
+    if (parsedJson == null || !parsedJson.containsKey('type')) {
+      return;
+    }
+    if (parsedJson['type'] != 'shape_drawing') {
+      return;
+    }
+    actionManager.register(ActionAddNewShape(this, Shape.fromMap(parsedJson)));
+    notifyListeners();
   }
 }

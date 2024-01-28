@@ -15,14 +15,13 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
   late Widget _preloadedColorPicker;
   final GlobalKey<CDKDialogPopoverState> _anchorColorButton = GlobalKey();
   final ValueNotifier<Color> _valueColorNotifier =
-      ValueNotifier(const Color(0x800080FF));
+  ValueNotifier(const Color(0x800080FF));
 
   _showPopoverColor(BuildContext context, GlobalKey anchorKey) {
     AppData appData = Provider.of<AppData>(context, listen: false);
     final GlobalKey<CDKDialogPopoverArrowedState> key = GlobalKey();
     if (anchorKey.currentContext == null) {
       // ignore: avoid_print
-      print("Error: anchorKey not assigned to a widget");
       return;
     }
     CDKDialogsManager.showPopoverArrowed(
@@ -32,8 +31,6 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
       isAnimated: true,
       isTranslucent: false,
       onHide: () {
-        // ignore: avoid_print
-        print("hide slider $key");
         appData.setBackgroundColor(_valueColorNotifier.value);
       },
       child: _preloadedColorPicker,
@@ -48,10 +45,11 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
         valueListenable: _valueColorNotifier,
         builder: (context, value, child) {
           return CDKPickerColor(
-            color: value,
+            color: appData.backgroundColor,
             onChanged: (color) {
               setState(() {
                 _valueColorNotifier.value = color;
+                appData.setBackgroundColorTemp(color);
               });
             },
           );
@@ -63,11 +61,10 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
   @override
   Widget build(BuildContext context) {
     _preloadedColorPicker = _buildPreloadedColorPicker();
-
     AppData appData = Provider.of<AppData>(context);
 
     TextStyle fontBold =
-        const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
+    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
     TextStyle font = const TextStyle(fontSize: 12, fontWeight: FontWeight.w400);
 
     return Container(
@@ -138,6 +135,7 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
                           return UtilButtonColor(
                               key: _anchorColorButton,
                               color: _valueColorNotifier.value,
+                              containerColor: appData.backgroundColor,
                               onPressed: () {
                                 _showPopoverColor(context, _anchorColorButton);
                               });

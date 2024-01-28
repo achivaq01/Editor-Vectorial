@@ -5,6 +5,8 @@ class Shape {
   List<Offset> vertices = [];
   double strokeWidth = 1;
   Color strokeColor = const Color(0xFF000000);
+  Color fillColor = const Color(0xFF000000);
+  bool closed = false;
 
   Shape();
 
@@ -24,11 +26,6 @@ class Shape {
     strokeWidth = width;
   }
 
-  void setStrokeColor(Color color) {
-    strokeColor = color;
-  }
-
-  // Converteix la forma en un mapa per serialitzar
   Map<String, dynamic> toMap() {
     return {
       'type': 'shape_drawing',
@@ -37,7 +34,6 @@ class Shape {
         'vertices': vertices.map((v) => {'dx': v.dx, 'dy': v.dy}).toList(),
         'strokeWidth': strokeWidth,
         'strokeColor': strokeColor.value,
-// Guarda el color com un valor enter
       }
     };
   }
@@ -63,5 +59,15 @@ class Shape {
     return shape;
   }
 
+  setStrokeColor(Color color) {
+    strokeColor = color;
+  }
 
+  void setClosed() {
+    closed = !closed;
+  }
+
+  bool isClosed() {
+    return closed;
+  }
 }
