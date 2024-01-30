@@ -198,6 +198,8 @@ class LayoutDesignState extends State<LayoutDesign> {
 
                         if (appData.toolSelected == "shape_ellipsis") {
                           _ellipseStartPosition = docPosition;
+                          appData.addRelativePointToNewShape(
+                              _ellipseStartPosition);
                         }
 
                         setState(() {});
@@ -294,17 +296,15 @@ class LayoutDesignState extends State<LayoutDesign> {
                             _scrollCenter,
                           );
 
-                          double radius = (_getDocPosition(
-                                  event.localPosition,
-                                  appData.zoom,
-                                  constraints,
-                                  docSize,
-                                  _scrollCenter))
-                              .distance;
+                          appData.newShape.isEllipsed = true;
 
-                          final path = Path()
-                            ..addOval(Rect.fromCircle(
-                                center: _ellipseStartPosition, radius: radius));
+                          if (appData.newShape.vertices.length > 1) {
+                            appData.newShape.vertices[1] = ellipsePosition;
+                          } else {
+                            appData.addRelativePointToNewShape(ellipsePosition);
+                          }
+
+                          print(appData.newShape.vertices);
 
                           setState(() {});
                         }

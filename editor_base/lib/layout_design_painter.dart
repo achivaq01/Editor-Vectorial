@@ -25,7 +25,7 @@ class LayoutDesignPainter extends CustomPainter {
     const double size = 5.0;
     int matSize = 4;
     List<List<double>> matIdent =
-    List.generate(matSize, (_) => List.filled(matSize, 0.0));
+        List.generate(matSize, (_) => List.filled(matSize, 0.0));
     for (int i = 0; i < matSize; i++) {
       matIdent[i][i] = 1.0;
     }
@@ -157,10 +157,15 @@ class LayoutDesignPainter extends CustomPainter {
       double y = shape.position.dy + shape.vertices[0].dy;
       Path path = Path();
       path.moveTo(x, y);
-      for (int i = 1; i < shape.vertices.length; i++) {
-        x = shape.position.dx + shape.vertices[i].dx;
-        y = shape.position.dy + shape.vertices[i].dy;
-        path.lineTo(x, y);
+      if (shape.isEllipsed) {
+        path.addOval(
+            Rect.fromPoints(shape.vertices.first, shape.vertices.last));
+      } else {
+        for (int i = 1; i < shape.vertices.length; i++) {
+          x = shape.position.dx + shape.vertices[i].dx;
+          y = shape.position.dy + shape.vertices[i].dy;
+          path.lineTo(x, y);
+        }
       }
       if (shape.closed) {
         path.close();
@@ -219,10 +224,26 @@ class LayoutDesignPainter extends CustomPainter {
         paintShape(canvas, shape);
 
         if (i == appData.shapeSelected) {
-          double minX = shape.position.dx + appData.shapesList[i].vertices.map((point) => point.dx).reduce((a, b) => a < b ? a : b) - (shape.strokeWidth / 2);
-          double minY = shape.position.dy + appData.shapesList[i].vertices.map((point) => point.dy).reduce((a, b) => a < b ? a : b) - (shape.strokeWidth / 2);
-          double maxX = shape.position.dx + appData.shapesList[i].vertices.map((point) => point.dx).reduce((a, b) => a > b ? a : b) + (shape.strokeWidth / 2);
-          double maxY = shape.position.dy + appData.shapesList[i].vertices.map((point) => point.dy).reduce((a, b) => a > b ? a : b) + (shape.strokeWidth / 2);
+          double minX = shape.position.dx +
+              appData.shapesList[i].vertices
+                  .map((point) => point.dx)
+                  .reduce((a, b) => a < b ? a : b) -
+              (shape.strokeWidth / 2);
+          double minY = shape.position.dy +
+              appData.shapesList[i].vertices
+                  .map((point) => point.dy)
+                  .reduce((a, b) => a < b ? a : b) -
+              (shape.strokeWidth / 2);
+          double maxX = shape.position.dx +
+              appData.shapesList[i].vertices
+                  .map((point) => point.dx)
+                  .reduce((a, b) => a > b ? a : b) +
+              (shape.strokeWidth / 2);
+          double maxY = shape.position.dy +
+              appData.shapesList[i].vertices
+                  .map((point) => point.dy)
+                  .reduce((a, b) => a > b ? a : b) +
+              (shape.strokeWidth / 2);
 
           paint.strokeWidth = 2;
           paint.color = Colors.yellowAccent;
@@ -238,8 +259,10 @@ class LayoutDesignPainter extends CustomPainter {
     // Dibuixa el poligon que s'està afegint (relatiu a la seva posició)
     Shape shape = appData.newShape;
     if (appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty) {
-      appData.newShapeColor = appData.shapesList[appData.shapeSelected].strokeColor;
-      appData.newShapeStrokeWidth = appData.shapesList[appData.shapeSelected].strokeWidth;
+      appData.newShapeColor =
+          appData.shapesList[appData.shapeSelected].strokeColor;
+      appData.newShapeStrokeWidth =
+          appData.shapesList[appData.shapeSelected].strokeWidth;
     }
     shape.strokeColor = appData.newShapeColor;
     shape.strokeWidth = appData.newShapeStrokeWidth;
@@ -263,4 +286,3 @@ class LayoutDesignPainter extends CustomPainter {
         oldDelegate.centerY != centerY;
   }
 }
-

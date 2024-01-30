@@ -7,6 +7,7 @@ class Shape {
   Color strokeColor = const Color(0xFF000000);
   Color fillColor = const Color(0xFF000000);
   bool closed = false;
+  bool isEllipsed = false;
 
   Shape();
 
