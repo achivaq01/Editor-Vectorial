@@ -13,13 +13,15 @@ class LayoutSidebarFormat extends StatefulWidget {
 
 class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
   late Widget _preloadedColorPicker;
+  late Widget _preloadedColorPickerFill;
   final GlobalKey<CDKDialogPopoverState> _anchorStrokeColorButton = GlobalKey();
   final GlobalKey<CDKDialogPopoverState> _anchorFillColorButton = GlobalKey();
   final ValueNotifier<Color> _valueColorNotifier =
       ValueNotifier(const Color(0x800080FF));
   final ValueNotifier<bool> _valueShapeClosedNotifier = ValueNotifier(false);
+  final ValueNotifier<Color> _valueColorNotifierFill = ValueNotifier(const Color(0x800080FF));
 
-  _showPopoverColor(BuildContext context, GlobalKey anchorKey) {
+  _showPopoverColor(BuildContext context, GlobalKey anchorKey, ValueNotifier<Color> valueNotifier) {
     AppData appData = Provider.of<AppData>(context, listen: false);
     final GlobalKey<CDKDialogPopoverArrowedState> key = GlobalKey();
     if (anchorKey.currentContext == null) {
@@ -34,10 +36,59 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
       isTranslucent: false,
       onHide: () {
         if (appData.shapeSelected >= 0) {
-          appData.setShapeSelectedColor(_valueColorNotifier.value);
+          appData.setShapeSelectedColor(valueNotifier.value);
         }
       },
       child: _preloadedColorPicker,
+    );
+  }
+
+  _showPopoverFill(BuildContext context, GlobalKey anchorKey, ValueNotifier<Color> valueNotifier) {
+    AppData appData = Provider.of<AppData>(context, listen: false);
+    final GlobalKey<CDKDialogPopoverArrowedState> key = GlobalKey();
+    if (anchorKey.currentContext == null) {
+      // ignore: avoid_print
+      return;
+    }
+    CDKDialogsManager.showPopoverArrowed(
+      key: key,
+      context: context,
+      anchorKey: anchorKey,
+      isAnimated: true,
+      isTranslucent: false,
+      onHide: () {
+        if (appData.shapeSelected >= 0) {
+          print('hola');
+        }
+      },
+      child: _preloadedColorPickerFill,
+    );
+  }
+
+  Widget _buildPreloadedColorPickerFill() {
+    AppData appData = Provider.of<AppData>(context);
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ValueListenableBuilder<Color>(
+        valueListenable: _valueColorNotifierFill,
+        builder: (context, value, child) {
+          return CDKPickerColor(
+            color: appData.shapeSelected >= 0
+                ? appData.shapesList[appData.shapeSelected].strokeColor
+                : appData.newShapeColor,
+            onChanged: (color) {
+              setState(() {
+                _valueColorNotifierFill.value = color;
+                if (appData.shapeSelected >= 0 &&
+                    appData.shapesList.isNotEmpty &&
+                    appData.shapeSelected < appData.shapesList.length) {
+                }
+                //appData.setNewShapeColor(color);
+              });
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -74,6 +125,7 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
   Widget build(BuildContext context) {
     AppData appData = Provider.of<AppData>(context);
     _preloadedColorPicker = _buildPreloadedColorPicker();
+    _preloadedColorPickerFill = _buildPreloadedColorPickerFill();
 
     TextStyle fontBold =
         const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
@@ -212,7 +264,7 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                               : appData.newShapeColor,
                           onPressed: () {
                             _showPopoverColor(
-                                context, _anchorStrokeColorButton);
+                                context, _anchorStrokeColorButton, _valueColorNotifier);
                           },
                         );
                       },
@@ -274,18 +326,18 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: ValueListenableBuilder<Color>(
-                      valueListenable: _valueColorNotifier,
+                      valueListenable: _valueColorNotifierFill,
                       builder: (context, value, child) {
                         return UtilButtonColor(
                           key: _anchorFillColorButton,
-                          color: _valueColorNotifier.value,
+                          color: _valueColorNotifierFill.value,
                           containerColor: appData.shapeSelected >= 0 &&
                                   appData.shapesList.isNotEmpty
                               ? appData
                                   .shapesList[appData.shapeSelected].fillColor
                               : appData.newFillColor,
                           onPressed: () {
-                            _showPopoverColor(context, _anchorFillColorButton);
+                            _showPopoverFill(context, _anchorFillColorButton, _valueColorNotifierFill);
                           },
                         );
                       },
