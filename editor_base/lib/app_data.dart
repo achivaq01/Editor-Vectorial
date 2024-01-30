@@ -26,7 +26,9 @@ class AppData with ChangeNotifier {
   Color backgroundColor = Colors.white;
   Color? backgroundColorTemp;
   Color? shapeSelectedColorTemp;
+  Color? shapeSelectedFillColorTemp;
   Offset? shapeSelectedPositionTemp;
+  Offset mouseToPolygonDifference = Offset.zero;
 
   bool readyExample = false;
   late dynamic dataExample;
@@ -131,9 +133,20 @@ class AppData with ChangeNotifier {
     notifyListeners();
   }
 
+  void setNewFillColor(Color color) {
+    newFillColor = color;
+    notifyListeners();
+  }
+
   void setShapeSelectedColorTemp(Color color) {
     shapeSelectedColorTemp ??= shapesList[shapeSelected].strokeColor;
     shapesList[shapeSelected].strokeColor = color;
+    notifyListeners();
+  }
+
+  void setShapeSelectedFillColorTemp(Color color) {
+    shapeSelectedFillColorTemp ??= shapesList[shapeSelected].fillColor;
+    shapesList[shapeSelected].fillColor = color;
     notifyListeners();
   }
 
