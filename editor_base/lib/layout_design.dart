@@ -178,14 +178,8 @@ class LayoutDesignState extends State<LayoutDesign> {
                         }
 
                         if (appData.toolSelected == "shape_line") {
-                          appData.addNewShape(Offset(
-                            docPosition.dx -
-                                appData.shapesList[appData.shapeSelected]
-                                    .position.dx,
-                            docPosition.dy -
-                                appData.shapesList[appData.shapeSelected]
-                                    .position.dy,
-                          ));
+                          appData.shapeSelected = -1;
+                          appData.newShape.addRelativePoint(docPosition);
                         }
 
                         if (appData.toolSelected == "shape_multiline") {
