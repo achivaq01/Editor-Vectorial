@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_cupertino_desktop_kit/cdk.dart';
 
 class Shape {
   Offset position = const Offset(0, 0);
   List<Offset> vertices = [];
   double strokeWidth = 1;
   Color strokeColor = const Color(0xFF000000);
-  Color fillColor = const Color(0xFF000000);
+  Color fillColor = CDKTheme.transparent;
   bool closed = false;
   bool isEllipsed = false;
 
@@ -35,6 +36,8 @@ class Shape {
         'vertices': vertices.map((v) => {'dx': v.dx, 'dy': v.dy}).toList(),
         'strokeWidth': strokeWidth,
         'strokeColor': strokeColor.value,
+        'fillColor': fillColor.value,
+        'isEllipsed': isEllipsed
       }
     };
   }
@@ -49,7 +52,9 @@ class Shape {
       ..setPosition(
           Offset(objectMap['position']['dx'], objectMap['position']['dy']))
       ..setStrokeWidth(objectMap['strokeWidth'])
-      ..setStrokeColor(Color(objectMap['strokeColor']));
+      ..setStrokeColor(Color(objectMap['strokeColor']))
+      ..setFillColor(Color(objectMap['fillColor']))
+      ..isEllipsed = (objectMap['isEllipsed']);
 
     if (objectMap['vertices'] != null) {
       var verticesList = objectMap['vertices'] as List;
@@ -58,6 +63,10 @@ class Shape {
     }
 
     return shape;
+  }
+
+  void setFillColor(Color color) {
+    fillColor = color;
   }
 
   setStrokeColor(Color color) {
