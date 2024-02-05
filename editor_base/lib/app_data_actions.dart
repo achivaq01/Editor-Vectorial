@@ -102,7 +102,6 @@ class ActionAddNewShape implements Action {
     appData.shapesList.add(newShape);
     appData.forceNotifyListeners();
   }
-
 }
 
 class ActionModifyShapeColor implements Action {
@@ -111,7 +110,8 @@ class ActionModifyShapeColor implements Action {
   final Color oldColor;
   final int shapeIndex;
 
-  ActionModifyShapeColor(this.appData, this.newColor, this.oldColor, this.shapeIndex);
+  ActionModifyShapeColor(
+      this.appData, this.newColor, this.oldColor, this.shapeIndex);
 
   @override
   void undo() {
@@ -126,13 +126,36 @@ class ActionModifyShapeColor implements Action {
   }
 }
 
+class ActionModifyFillColor implements Action {
+  final AppData appData;
+  final Color newColor;
+  final Color oldColor;
+  final int shapeIndex;
+
+  ActionModifyFillColor(
+      this.appData, this.newColor, this.oldColor, this.shapeIndex);
+
+  @override
+  void undo() {
+    appData.shapesList[shapeIndex].fillColor = oldColor;
+    appData.forceNotifyListeners();
+  }
+
+  @override
+  void redo() {
+    appData.shapesList[shapeIndex].fillColor = newColor;
+    appData.forceNotifyListeners();
+  }
+}
+
 class ActionModifyShapeStrokeWidth implements Action {
   final AppData appData;
   final double newStroke;
   final double oldStroke;
   final int shapeIndex;
 
-  ActionModifyShapeStrokeWidth(this.appData, this.newStroke, this.oldStroke, this.shapeIndex);
+  ActionModifyShapeStrokeWidth(
+      this.appData, this.newStroke, this.oldStroke, this.shapeIndex);
 
   @override
   void undo() {
@@ -165,7 +188,6 @@ class ActionChangeBackgroundColor implements Action {
     appData.backgroundColor = oldColor!;
     appData.forceNotifyListeners();
   }
-
 }
 
 class ActionDeleteSelectedShape implements Action {
@@ -193,7 +215,8 @@ class ActionChangeShapeSelectedPosition implements Action {
   final Offset oldOffset;
   final int shapeIndex;
 
-  ActionChangeShapeSelectedPosition(this.appData, this.newOffset, this.oldOffset, this.shapeIndex);
+  ActionChangeShapeSelectedPosition(
+      this.appData, this.newOffset, this.oldOffset, this.shapeIndex);
 
   @override
   void redo() {
@@ -206,5 +229,4 @@ class ActionChangeShapeSelectedPosition implements Action {
     appData.shapesList[shapeIndex].position = oldOffset;
     appData.forceNotifyListeners();
   }
-
 }

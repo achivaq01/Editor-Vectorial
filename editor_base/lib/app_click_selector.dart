@@ -60,49 +60,6 @@ class AppClickSelector {
     }).toList();
   }
 
-  /*
-  static Future<bool> _isClickOnShape(AppData appData, Offset localPosition,
-      Shape shape, BoxConstraints constraints, Offset center) async {
-    ui.PictureRecorder recorder = ui.PictureRecorder();
-    ui.Canvas canvas = ui.Canvas(recorder);
-
-    _paintOffscreenCanvas(appData, canvas, constraints.biggest, shape, center);
-
-    ui.Image image = await recorder
-        .endRecording()
-        .toImage(constraints.maxWidth.toInt(), constraints.maxHeight.toInt());
-
-    if (localPosition.dx < 0 ||
-        localPosition.dx >= constraints.maxWidth ||
-        localPosition.dy < 0 ||
-        localPosition.dy >= constraints.maxHeight) {
-      return false;
-    }
-
-    ByteData? byteData =
-        await image.toByteData(format: ui.ImageByteFormat.rawRgba);
-
-    image.dispose();
-
-    if (byteData != null) {
-      int pixelIndex =
-          ((localPosition.dy.round() * image.width + localPosition.dx.round()) *
-                  4)
-              .toInt();
-      if (pixelIndex >= 0 && pixelIndex < byteData.lengthInBytes - 4) {
-        // int red = byteData.getUint8(pixelIndex);
-        // int green = byteData.getUint8(pixelIndex + 1);
-        // int blue = byteData.getUint8(pixelIndex + 2);
-        int alpha = byteData.getUint8(pixelIndex + 3);
-
-        return alpha != 0;
-      }
-    }
-
-    return false;
-  }
-  */
-
   static Future<bool> _isClickOnShape(AppData appData, Offset localPosition,
       Shape shape, BoxConstraints constraints, Offset center) async {
     ui.PictureRecorder recorder = ui.PictureRecorder();
@@ -135,7 +92,7 @@ class AppClickSelector {
         int alpha = byteData.getUint8(pixelIndex + 3);
 
         // Comprova si el color d'emplenat no és transparent
-        if (shape.fillColor.alpha != 0 && alpha != 0) {
+        if (shape.fillColor.alpha != 0 || alpha != 0) {
           return true;
         }
       }
@@ -165,19 +122,18 @@ class AppClickSelector {
     Color tmpStroke = shape.strokeColor;
     shape.strokeColor = Colors.black;
 
+    double tmpStrokeWidth = shape.strokeWidth;
+
     Color tmpFill = shape.fillColor;
-    /*
     if (tmpFill.alpha != 0) {
-      shape.fillColor = color;
+      shape.fillColor = Colors.transparent;
     }
-    */
+
     // Dibuixa el poligon que s'està afegint
     LayoutDesignPainter.paintShape(canvas, shape);
 
     shape.strokeColor = tmpStroke;
-    /*
     shape.strokeWidth = tmpStrokeWidth;
-    */
     shape.fillColor = tmpFill;
 
     // Restaura l'estat previ

@@ -19,9 +19,11 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
   final ValueNotifier<Color> _valueColorNotifier =
       ValueNotifier(const Color(0x800080FF));
   final ValueNotifier<bool> _valueShapeClosedNotifier = ValueNotifier(false);
-  final ValueNotifier<Color> _valueColorNotifierFill = ValueNotifier(const Color(0x800080FF));
+  final ValueNotifier<Color> _valueColorNotifierFill =
+      ValueNotifier(const Color(0x800080FF));
 
-  _showPopoverColor(BuildContext context, GlobalKey anchorKey, ValueNotifier<Color> valueNotifier) {
+  _showPopoverColor(BuildContext context, GlobalKey anchorKey,
+      ValueNotifier<Color> valueNotifier) {
     AppData appData = Provider.of<AppData>(context, listen: false);
     final GlobalKey<CDKDialogPopoverArrowedState> key = GlobalKey();
     if (anchorKey.currentContext == null) {
@@ -43,7 +45,8 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
     );
   }
 
-  _showPopoverFill(BuildContext context, GlobalKey anchorKey, ValueNotifier<Color> valueNotifier) {
+  _showPopoverFill(BuildContext context, GlobalKey anchorKey,
+      ValueNotifier<Color> valueNotifier) {
     AppData appData = Provider.of<AppData>(context, listen: false);
     final GlobalKey<CDKDialogPopoverArrowedState> key = GlobalKey();
     if (anchorKey.currentContext == null) {
@@ -58,37 +61,10 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
       isTranslucent: false,
       onHide: () {
         if (appData.shapeSelected >= 0) {
-          print('hola');
+          appData.setShapeSelectedFillColor(valueNotifier.value);
         }
       },
       child: _preloadedColorPickerFill,
-    );
-  }
-
-  Widget _buildPreloadedColorPickerFill() {
-    AppData appData = Provider.of<AppData>(context);
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ValueListenableBuilder<Color>(
-        valueListenable: _valueColorNotifierFill,
-        builder: (context, value, child) {
-          return CDKPickerColor(
-            color: appData.shapeSelected >= 0
-                ? appData.shapesList[appData.shapeSelected].strokeColor
-                : appData.newShapeColor,
-            onChanged: (color) {
-              setState(() {
-                _valueColorNotifierFill.value = color;
-                if (appData.shapeSelected >= 0 &&
-                    appData.shapesList.isNotEmpty &&
-                    appData.shapeSelected < appData.shapesList.length) {
-                }
-                //appData.setNewShapeColor(color);
-              });
-            },
-          );
-        },
-      ),
     );
   }
 
@@ -112,7 +88,34 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                   appData.setShapeSelectedColorTemp(color);
                 }
                 appData.setNewShapeColor(color);
-                //appData.setNewShapeColor(color);
+              });
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildPreloadedColorPickerFill() {
+    AppData appData = Provider.of<AppData>(context);
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ValueListenableBuilder<Color>(
+        valueListenable: _valueColorNotifierFill,
+        builder: (context, value, child) {
+          return CDKPickerColor(
+            color: appData.shapeSelected >= 0
+                ? appData.shapesList[appData.shapeSelected].fillColor
+                : appData.newFillColor,
+            onChanged: (color) {
+              setState(() {
+                _valueColorNotifierFill.value = color;
+                if (appData.shapeSelected >= 0 &&
+                    appData.shapesList.isNotEmpty &&
+                    appData.shapeSelected < appData.shapesList.length) {
+                  appData.setShapeSelectedFillColorTemp(color);
+                }
+                appData.setNewFillColor(color);
               });
             },
           );
@@ -263,8 +266,8 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                                   .shapesList[appData.shapeSelected].strokeColor
                               : appData.newShapeColor,
                           onPressed: () {
-                            _showPopoverColor(
-                                context, _anchorStrokeColorButton, _valueColorNotifier);
+                            _showPopoverColor(context, _anchorStrokeColorButton,
+                                _valueColorNotifier);
                           },
                         );
                       },
@@ -337,7 +340,8 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                                   .shapesList[appData.shapeSelected].fillColor
                               : appData.newFillColor,
                           onPressed: () {
-                            _showPopoverFill(context, _anchorFillColorButton, _valueColorNotifierFill);
+                            _showPopoverFill(context, _anchorFillColorButton,
+                                _valueColorNotifierFill);
                           },
                         );
                       },

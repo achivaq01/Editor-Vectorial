@@ -298,8 +298,6 @@ class LayoutDesignState extends State<LayoutDesign> {
                             appData.addRelativePointToNewShape(ellipsePosition);
                           }
 
-                          print(appData.newShape.vertices);
-
                           setState(() {});
                         }
 

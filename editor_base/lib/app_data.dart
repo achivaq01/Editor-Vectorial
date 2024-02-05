@@ -150,6 +150,13 @@ class AppData with ChangeNotifier {
     notifyListeners();
   }
 
+  void setShapeSelectedFillColor(Color color) {
+    actionManager.register(ActionModifyFillColor(
+        this, color, shapeSelectedFillColorTemp!, shapeSelected));
+    shapeSelectedFillColorTemp = null;
+    notifyListeners();
+  }
+
   void setShapeSelectedColor(Color color) {
     actionManager.register(ActionModifyShapeColor(
         this, color, shapeSelectedColorTemp!, shapeSelected));

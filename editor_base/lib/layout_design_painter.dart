@@ -150,8 +150,11 @@ class LayoutDesignPainter extends CustomPainter {
   static void paintShape(Canvas canvas, Shape shape) {
     if (shape.vertices.isNotEmpty) {
       Paint paint = Paint();
+      Paint paintFill = Paint();
       paint.color = shape.strokeColor;
       paint.style = PaintingStyle.stroke;
+      paintFill.color = shape.fillColor;
+      paintFill.style = PaintingStyle.fill;
       paint.strokeWidth = shape.strokeWidth;
       double x = shape.position.dx + shape.vertices[0].dx;
       double y = shape.position.dy + shape.vertices[0].dy;
@@ -170,6 +173,7 @@ class LayoutDesignPainter extends CustomPainter {
       if (shape.closed) {
         path.close();
       }
+      canvas.drawPath(path, paintFill);
       canvas.drawPath(path, paint);
     }
   }
@@ -261,10 +265,13 @@ class LayoutDesignPainter extends CustomPainter {
     if (appData.shapeSelected >= 0 && appData.shapesList.isNotEmpty) {
       appData.newShapeColor =
           appData.shapesList[appData.shapeSelected].strokeColor;
+      appData.newFillColor =
+          appData.shapesList[appData.shapeSelected].fillColor;
       appData.newShapeStrokeWidth =
           appData.shapesList[appData.shapeSelected].strokeWidth;
     }
     shape.strokeColor = appData.newShapeColor;
+    shape.fillColor = appData.newFillColor;
     shape.strokeWidth = appData.newShapeStrokeWidth;
     paintShape(canvas, shape);
 
