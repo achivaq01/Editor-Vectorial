@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_desktop_kit/cdk.dart';
 import 'app_data.dart';
@@ -161,8 +160,21 @@ class LayoutDesignPainter extends CustomPainter {
       Path path = Path();
       path.moveTo(x, y);
       if (shape.isEllipsed) {
-        path.addOval(
-            Rect.fromPoints(shape.vertices.first, shape.vertices.last));
+        double centerX = (shape.vertices[0].dx + shape.vertices[1].dx) / 2;
+        double centerY = (shape.vertices[0].dy + shape.vertices[1].dy) / 2;
+        Offset center = shape.position + Offset(centerX, centerY);
+        double radiusX =
+            (shape.vertices[1].dx - shape.vertices[0].dx).abs() / 2;
+        double radiusY =
+            (shape.vertices[1].dy - shape.vertices[0].dy).abs() / 2;
+        canvas.drawOval(
+            Rect.fromCenter(
+                center: center, width: radiusX * 2, height: radiusY * 2),
+            paintFill);
+        canvas.drawOval(
+            Rect.fromCenter(
+                center: center, width: radiusX * 2, height: radiusY * 2),
+            paint);
       } else {
         for (int i = 1; i < shape.vertices.length; i++) {
           x = shape.position.dx + shape.vertices[i].dx;

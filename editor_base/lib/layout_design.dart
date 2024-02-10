@@ -333,40 +333,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                           appData.setShapeSelectedPosition(appData
                               .shapesList[appData.shapeSelected].position);
                         }
-                        /*
-                        _isMouseButtonPressed = false;
-                        if (appData.toolSelected == "shape_drawing") {
-                          appData.addNewShapeToShapesList();
-                        }
 
-                        if (appData.toolSelected == "shape_line") {
-                          appData.addNewShapeToShapesList();
-                        }
-
-                        if (appData.toolSelected == "shape_rectangle") {
-                          appData.addNewShapeToShapesList();
-                        }
-
-                        if (appData.toolSelected == "pointer_shapes" &&
-                            appData.shapeSelected != -1) {
-                          appData.setShapeSelectedPosition(appData
-                              .shapesList[appData.shapeSelected].position);
-                        }
-                        */
-                        /*
-                        Size docSize =
-                            Size(appData.docSize.width, appData.docSize.height);
-                        Offset docPosition = _getDocPosition(
-                            event.localPosition,
-                            appData.zoom,
-                            constraints,
-                            docSize,
-                            _scrollCenter);
-                        appData.setShapeSelectedPosition(Offset(
-                          docPosition.dx - appData.mouseToPolygonDifference.dx,
-                          docPosition.dy - appData.mouseToPolygonDifference.dy,
-                        ));
-                        */
                         setState(() {});
                       },
                       onPointerSignal: (pointerSignal) {
