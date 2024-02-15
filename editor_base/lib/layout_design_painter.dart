@@ -162,7 +162,7 @@ class LayoutDesignPainter extends CustomPainter {
       path.moveTo(x, y);
       if (shape.isEllipsed) {
         path.addOval(
-            Rect.fromPoints(shape.vertices.first, shape.vertices.last));
+            Rect.fromPoints(shape.vertices.first, shape.position));
       } else {
         for (int i = 1; i < shape.vertices.length; i++) {
           x = shape.position.dx + shape.vertices[i].dx;

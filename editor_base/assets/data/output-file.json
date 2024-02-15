@@ -1,0 +1,193 @@
+{
+ "document": {
+  "document_height": 400.0,
+  "document_width": 500.0,
+  "document_color": 4294967295
+ },
+ "shapes": [
+  {
+   "type": "shape_drawing",
+   "object": {
+    "position": {
+     "dx": 194.23930921052636,
+     "dy": -36.08141447368422
+    },
+    "vertices": [
+     {
+      "dx": 189.0090460526316,
+      "dy": 63.89391447368419
+     },
+     {
+      "dx": 329.5970394736842,
+      "dy": 218.52384868421052
+     }
+    ],
+    "strokeWidth": 1.0,
+    "strokeColor": 4278190080,
+    "fillColor": 4292712086,
+    "isEllipsed": true
+   }
+  },
+  {
+   "type": "shape_drawing",
+   "object": {
+    "position": {
+     "dx": -93.21134868421052,
+     "dy": 92.87828947368422
+    },
+    "vertices": [
+     {
+      "dx": 122.64391447368422,
+      "dy": 61.18009868421052
+     },
+     {
+      "dx": 364.6217105263158,
+      "dy": 216.7763157894737
+     }
+    ],
+    "strokeWidth": 1.0,
+    "strokeColor": 4278190080,
+    "fillColor": 0,
+    "isEllipsed": false
+   }
+  },
+  {
+   "type": "shape_drawing",
+   "object": {
+    "position": {
+     "dx": 0.0,
+     "dy": 0.0
+    },
+    "vertices": [
+     {
+      "dx": 362.96875,
+      "dy": 67.70970394736841
+     },
+     {
+      "dx": 148.19901315789474,
+      "dy": 230.41940789473682
+     }
+    ],
+    "strokeWidth": 1.0,
+    "strokeColor": 4278190080,
+    "fillColor": 0,
+    "isEllipsed": false
+   }
+  },
+  {
+   "type": "shape_drawing",
+   "object": {
+    "position": {
+     "dx": 0.0,
+     "dy": 0.0
+    },
+    "vertices": [
+     {
+      "dx": 29.88486842105266,
+      "dy": 153.24424342105266
+     },
+     {
+      "dx": 240.1110197368422,
+      "dy": 38.81578947368422
+     }
+    ],
+    "strokeWidth": 1.0,
+    "strokeColor": 4278190080,
+    "fillColor": 4292712086,
+    "isEllipsed": false
+   }
+  },
+  {
+   "type": "shape_drawing",
+   "object": {
+    "position": {
+     "dx": 0.0,
+     "dy": 0.0
+    },
+    "vertices": [
+     {
+      "dx": 268.84868421052636,
+      "dy": 307.6603618421053
+     },
+     {
+      "dx": 366.4062500000001,
+      "dy": 175.1932565789474
+     }
+    ],
+    "strokeWidth": 1.0,
+    "strokeColor": 4278190080,
+    "fillColor": 4292712086,
+    "isEllipsed": false
+   }
+  },
+  {
+   "type": "shape_drawing",
+   "object": {
+    "position": {
+     "dx": 0.0,
+     "dy": 0.0
+    },
+    "vertices": [
+     {
+      "dx": 31.484375000000057,
+      "dy": 154.62993421052636
+     },
+     {
+      "dx": 249.90953947368428,
+      "dy": 152.98930921052636
+     }
+    ],
+    "strokeWidth": 1.0,
+    "strokeColor": 4278190080,
+    "fillColor": 4292712086,
+    "isEllipsed": false
+   }
+  },
+  {
+   "type": "shape_drawing",
+   "object": {
+    "position": {
+     "dx": 0.0,
+     "dy": 0.0
+    },
+    "vertices": [
+     {
+      "dx": 268.88980263157896,
+      "dy": 307.55345394736844
+     },
+     {
+      "dx": 249.3338815789474,
+      "dy": 153.52384868421052
+     }
+    ],
+    "strokeWidth": 1.0,
+    "strokeColor": 4278190080,
+    "fillColor": 4292712086,
+    "isEllipsed": false
+   }
+  },
+  {
+   "type": "shape_drawing",
+   "object": {
+    "position": {
+     "dx": 0.0,
+     "dy": 0.0
+    },
+    "vertices": [
+     {
+      "dx": 147.59868421052636,
+      "dy": 229.57648026315792
+     },
+     {
+      "dx": 198.32236842105266,
+      "dy": 167.1258223684211
+     }
+    ],
+    "strokeWidth": 1.0,
+    "strokeColor": 4278190080,
+    "fillColor": 4292712086,
+    "isEllipsed": false
+   }
+  }
+ ]
+}

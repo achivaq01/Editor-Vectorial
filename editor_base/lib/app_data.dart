@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'app_click_selector.dart';
@@ -29,6 +30,7 @@ class AppData with ChangeNotifier {
   Color? shapeSelectedFillColorTemp;
   Offset? shapeSelectedPositionTemp;
   Offset mouseToPolygonDifference = Offset.zero;
+  String? filePath;
 
   bool readyExample = false;
   late dynamic dataExample;
@@ -203,6 +205,68 @@ class AppData with ChangeNotifier {
       return;
     }
     actionManager.register(ActionAddNewShape(this, Shape.fromMap(parsedJson)));
+    notifyListeners();
+  }
+
+  Map<String, dynamic> documentToMap() {
+    return {
+      'document_height': docSize.height,
+      'document_width': docSize.width,
+      'document_color': backgroundColor.value
+    };
+  }
+
+  Future<void> saveFile() async {
+    filePath ?? await pickSaveFile();
+
+    File file = File(filePath!);
+    List<Map<String, dynamic>> list = shapesList.map((shape) => shape.toMap()).toList();
+    Map<String, dynamic> data = {
+      'document': documentToMap(),
+      'shapes': list
+    };
+    String jsonString = const JsonEncoder.withIndent(" ").convert(data);
+    await file.writeAsString(jsonString, mode: FileMode.writeOnly, flush: true, encoding: utf8);
+  }
+
+  Future<void> pickSaveFile() async {
+    filePath = await FilePicker.platform.saveFile(
+      dialogTitle: 'Please select an output file:',
+      fileName: 'output-file.json',
+    );
+  }
+
+  Future<void> pickLoadFile() async {
+    FilePicker picker = FilePicker.platform;
+    FilePickerResult? result = await picker.pickFiles(dialogTitle: 'file to load');
+    filePath = result!.files[0].path;
+  }
+
+  Future<void> loadFile() async {
+    await pickLoadFile();
+
+    File file = File(filePath!);
+    Map<String, dynamic> data = jsonDecode(file.readAsStringSync());
+
+    if (!data.containsKey('document')) {
+      return;
+    }
+
+    docSize = Size(data['document']['document_width'], data['document']['document_height']);
+
+    if (!data.containsKey('shapes')) {
+      return;
+    }
+
+    List<Map<String, dynamic>> shapesData = List<Map<String, dynamic>>.from(data['shapes']);
+    shapesList = [];
+
+    for (Map<String, dynamic> shapeData in shapesData) {
+      Shape shape = Shape.fromMap(shapeData);
+      shapesList.add(shape);
+    }
+
+
     notifyListeners();
   }
 }

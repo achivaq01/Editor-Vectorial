@@ -142,6 +142,18 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
                         })),
               ]),
               const SizedBox(height: 16),
+              CDKButton(
+                  onPressed: () {
+                    appData.saveFile();
+                  },
+                  child: Text('SAVE'),
+              ),
+              CDKButton(
+                onPressed: () {
+                  appData.loadFile();
+                },
+                child: Text('LOAD'),
+              )
             ],
           );
         },
