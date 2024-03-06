@@ -161,12 +161,16 @@ class LayoutDesignPainter extends CustomPainter {
       path.moveTo(x, y);
       if (shape.isEllipsed) {
         double centerX = (shape.vertices[0].dx + shape.vertices[1].dx) / 2;
+        shape.cx = centerX;
         double centerY = (shape.vertices[0].dy + shape.vertices[1].dy) / 2;
+        shape.cy = centerY;
         Offset center = shape.position + Offset(centerX, centerY);
         double radiusX =
             (shape.vertices[1].dx - shape.vertices[0].dx).abs() / 2;
+        shape.rx = radiusX;
         double radiusY =
             (shape.vertices[1].dy - shape.vertices[0].dy).abs() / 2;
+        shape.ry = radiusY;
         canvas.drawOval(
             Rect.fromCenter(
                 center: center, width: radiusX * 2, height: radiusY * 2),

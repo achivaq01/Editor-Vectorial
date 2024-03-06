@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'app_click_selector.dart';
 import 'app_data_actions.dart';
 import 'util_shape.dart';
+import 'package:xml/xml.dart' as xml;
 
 class AppData with ChangeNotifier {
   // Access appData globaly with:
@@ -220,13 +221,12 @@ class AppData with ChangeNotifier {
     filePath ?? await pickSaveFile();
 
     File file = File(filePath!);
-    List<Map<String, dynamic>> list = shapesList.map((shape) => shape.toMap()).toList();
-    Map<String, dynamic> data = {
-      'document': documentToMap(),
-      'shapes': list
-    };
+    List<Map<String, dynamic>> list =
+        shapesList.map((shape) => shape.toMap()).toList();
+    Map<String, dynamic> data = {'document': documentToMap(), 'shapes': list};
     String jsonString = const JsonEncoder.withIndent(" ").convert(data);
-    await file.writeAsString(jsonString, mode: FileMode.writeOnly, flush: true, encoding: utf8);
+    await file.writeAsString(jsonString,
+        mode: FileMode.writeOnly, flush: true, encoding: utf8);
   }
 
   Future<void> pickSaveFile() async {
@@ -238,7 +238,8 @@ class AppData with ChangeNotifier {
 
   Future<void> pickLoadFile() async {
     FilePicker picker = FilePicker.platform;
-    FilePickerResult? result = await picker.pickFiles(dialogTitle: 'file to load');
+    FilePickerResult? result =
+        await picker.pickFiles(dialogTitle: 'file to load');
     filePath = result!.files[0].path;
   }
 
@@ -252,13 +253,15 @@ class AppData with ChangeNotifier {
       return;
     }
 
-    docSize = Size(data['document']['document_width'], data['document']['document_height']);
+    docSize = Size(data['document']['document_width'],
+        data['document']['document_height']);
 
     if (!data.containsKey('shapes')) {
       return;
     }
 
-    List<Map<String, dynamic>> shapesData = List<Map<String, dynamic>>.from(data['shapes']);
+    List<Map<String, dynamic>> shapesData =
+        List<Map<String, dynamic>>.from(data['shapes']);
     shapesList = [];
 
     for (Map<String, dynamic> shapeData in shapesData) {
@@ -266,7 +269,38 @@ class AppData with ChangeNotifier {
       shapesList.add(shape);
     }
 
-
     notifyListeners();
+  }
+
+  Future<void> exportFile() async {
+    if (filePath == null) {
+      await pickSaveFile();
+    }
+
+    File file = File(filePath!);
+
+    var document = xml.XmlDocument(
+      [
+        xml.XmlElement(
+          xml.XmlName('svg'),
+          [
+            xml.XmlAttribute(xml.XmlName('width'), docSize.width.toString()),
+            xml.XmlAttribute(xml.XmlName('height'), docSize.height.toString()),
+            xml.XmlAttribute(
+                xml.XmlName('xmlns'), 'http://www.w3.org/2000/svg'),
+            xml.XmlAttribute(xml.XmlName('version'), '1.1'),
+            xml.XmlAttribute(
+              xml.XmlName('style'),
+              'background-color: ${'#${backgroundColor.value.toRadixString(16).padLeft(8, '0').substring(2)}'}',
+            ),
+          ],
+          shapesList.map((shape) {
+            return shape.toSvgElement();
+          }).toList(),
+        ),
+      ],
+    );
+
+    await file.writeAsString(document.toXmlString(pretty: true));
   }
 }

@@ -120,6 +120,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                   Offset firstTap = appData.newShape.vertices.first;
                   Offset lastTap = appData.newShape.vertices.last;
                   if (firstTap != lastTap) {
+                    appData.newShape.isMultiline = true;
                     appData.addNewShapeToShapesList();
                   }
                 }
@@ -180,6 +181,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                         if (appData.toolSelected == "shape_line") {
                           appData.shapeSelected = -1;
                           appData.newShape.addRelativePoint(docPosition);
+                          appData.newShape.setInitialPosition(docPosition);
                         }
 
                         if (appData.toolSelected == "shape_multiline") {
@@ -232,6 +234,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                           } else {
                             appData.newShape.vertices.last = docPosition;
                           }
+                          appData.newShape.setFinalPosition(docPosition);
                           setState(() {});
                         }
 
@@ -264,6 +267,11 @@ class LayoutDesignState extends State<LayoutDesign> {
                           double bottom = startPoint.dy > endPoint.dy
                               ? startPoint.dy
                               : endPoint.dy;
+
+                          appData.newShape.width = docSize.width;
+                          appData.newShape.height = docSize.height;
+                          appData.newShape.left = left;
+                          appData.newShape.top;
 
                           appData.addRelativePointToNewShape(Offset(left, top));
                           appData
@@ -318,14 +326,17 @@ class LayoutDesignState extends State<LayoutDesign> {
 
                         if (appData.toolSelected == "shape_line") {
                           appData.addNewShapeToShapesList();
+                          appData.newShape.isLine = true;
                         }
 
                         if (appData.toolSelected == "shape_rectangle") {
                           appData.addNewShapeToShapesList();
+                          appData.newShape.isRectangle = true;
                         }
 
                         if (appData.toolSelected == "shape_ellipsis") {
                           appData.addNewShapeToShapesList();
+                          appData.newShape.isEllipsis = true;
                         }
 
                         if (appData.toolSelected == "pointer_shapes" &&

@@ -15,7 +15,7 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
   late Widget _preloadedColorPicker;
   final GlobalKey<CDKDialogPopoverState> _anchorColorButton = GlobalKey();
   final ValueNotifier<Color> _valueColorNotifier =
-  ValueNotifier(const Color(0x800080FF));
+      ValueNotifier(const Color(0x800080FF));
 
   _showPopoverColor(BuildContext context, GlobalKey anchorKey) {
     AppData appData = Provider.of<AppData>(context, listen: false);
@@ -64,7 +64,7 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
     AppData appData = Provider.of<AppData>(context);
 
     TextStyle fontBold =
-    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
+        const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
     TextStyle font = const TextStyle(fontSize: 12, fontWeight: FontWeight.w400);
 
     return Container(
@@ -143,16 +143,22 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
               ]),
               const SizedBox(height: 16),
               CDKButton(
-                  onPressed: () {
-                    appData.saveFile();
-                  },
-                  child: Text('SAVE'),
-              ),
-              CDKButton(
                 onPressed: () {
                   appData.loadFile();
                 },
-                child: Text('LOAD'),
+                child: const Text('Load file'),
+              ),
+              CDKButton(
+                onPressed: () {
+                  appData.saveFile();
+                },
+                child: const Text('Save as / Save'),
+              ),
+              CDKButton(
+                onPressed: () {
+                  appData.exportFile();
+                },
+                child: const Text('Export as SVG'),
               )
             ],
           );
