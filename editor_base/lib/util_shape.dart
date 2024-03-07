@@ -78,7 +78,11 @@ class Shape {
         'strokeWidth': strokeWidth,
         'strokeColor': strokeColor.value,
         'fillColor': fillColor.value,
-        'isEllipsed': isEllipsed
+        'isEllipsed': isEllipsed,
+        'isLine': isLine,
+        'isMultiline': isMultiline,
+        'isRectangle': isRectangle,
+        'isEllipsis': isEllipsis
       }
     };
   }
@@ -107,7 +111,7 @@ class Shape {
   }
 
   xml.XmlElement toSvgElement() {
-    xml.XmlElement xmlShape = xml.XmlElement(xml.XmlName('placeholder'), []);
+    xml.XmlElement? xmlShape;
     String fillColorStr;
 
     if (fillColor == CDKTheme.transparent) {
@@ -163,6 +167,7 @@ class Shape {
         ],
       );
     }
+    xmlShape ??= xml.XmlElement(xml.XmlName('placeholder'), []);
     return xmlShape;
   }
 }

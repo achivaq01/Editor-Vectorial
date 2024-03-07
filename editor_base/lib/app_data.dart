@@ -294,9 +294,7 @@ class AppData with ChangeNotifier {
               'background-color: ${'#${backgroundColor.value.toRadixString(16).padLeft(8, '0').substring(2)}'}',
             ),
           ],
-          shapesList.map((shape) {
-            return shape.toSvgElement();
-          }).toList(),
+          shapesList.map((shape) => shape.toSvgElement()).toList(),
         ),
       ],
     );

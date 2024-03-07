@@ -325,18 +325,18 @@ class LayoutDesignState extends State<LayoutDesign> {
                         }
 
                         if (appData.toolSelected == "shape_line") {
-                          appData.addNewShapeToShapesList();
                           appData.newShape.isLine = true;
+                          appData.addNewShapeToShapesList();
                         }
 
                         if (appData.toolSelected == "shape_rectangle") {
-                          appData.addNewShapeToShapesList();
                           appData.newShape.isRectangle = true;
+                          appData.addNewShapeToShapesList();
                         }
 
                         if (appData.toolSelected == "shape_ellipsis") {
-                          appData.addNewShapeToShapesList();
                           appData.newShape.isEllipsis = true;
+                          appData.addNewShapeToShapesList();
                         }
 
                         if (appData.toolSelected == "pointer_shapes" &&
