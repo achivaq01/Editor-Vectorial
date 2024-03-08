@@ -69,6 +69,10 @@ class Shape {
     vertices.add(Offset(point.dx - position.dx, point.dy - position.dy));
   }
 
+  String colorToRgba(Color color) {
+    return 'rgba(${color.red}, ${color.green}, ${color.blue}, ${color.alpha / 255})';
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'type': 'shape_drawing',
@@ -112,13 +116,7 @@ class Shape {
 
   xml.XmlElement toSvgElement() {
     xml.XmlElement? xmlShape;
-    String fillColorStr;
-
-    if (fillColor == CDKTheme.transparent) {
-      fillColorStr = "none";
-    } else {
-      fillColorStr = fillColor.value.toString();
-    }
+    xmlShape ??= xml.XmlElement(xml.XmlName('placeholder'), []);
 
     if (isLine) {
       xmlShape = xml.XmlElement(
@@ -129,7 +127,7 @@ class Shape {
           xml.XmlAttribute(xml.XmlName('x2'), finalPosition.dx.toString()),
           xml.XmlAttribute(xml.XmlName('y2'), finalPosition.dy.toString()),
           xml.XmlAttribute(xml.XmlName('style'),
-              'stroke:$strokeColor;stroke-width:$strokeWidth'),
+              'stroke:${colorToRgba(strokeColor)};stroke-width:$strokeWidth'),
         ],
       );
     } else if (isMultiline) {
@@ -139,7 +137,7 @@ class Shape {
           xml.XmlAttribute(xml.XmlName('points'),
               vertices.map((vertex) => '${vertex.dx},${vertex.dy}').join(' ')),
           xml.XmlAttribute(xml.XmlName('style'),
-              'fill:$fillColorStr;stroke:$strokeColor;stroke-width:$strokeWidth'),
+              'fill:${colorToRgba(fillColor)};stroke:${colorToRgba(strokeColor)};stroke-width:$strokeWidth'),
         ],
       );
     } else if (isRectangle) {
@@ -151,7 +149,7 @@ class Shape {
           xml.XmlAttribute(xml.XmlName('x'), left.toString()),
           xml.XmlAttribute(xml.XmlName('y'), top.toString()),
           xml.XmlAttribute(xml.XmlName('style'),
-              'fill:$fillColor;stroke-width:$strokeWidth;stroke:$strokeColor'),
+              'fill:${colorToRgba(fillColor)};stroke-width:$strokeWidth;stroke:${colorToRgba(strokeColor)}'),
         ],
       );
     } else if (isEllipsis) {
@@ -163,11 +161,10 @@ class Shape {
           xml.XmlAttribute(xml.XmlName('cx'), cx.toString()),
           xml.XmlAttribute(xml.XmlName('cy'), cy.toString()),
           xml.XmlAttribute(xml.XmlName('style'),
-              'fill:$fillColor;stroke:$strokeColor;stroke-width:$strokeWidth'),
+              'fill:${colorToRgba(fillColor)};stroke:${colorToRgba(strokeColor)};stroke-width:$strokeWidth'),
         ],
       );
     }
-    xmlShape ??= xml.XmlElement(xml.XmlName('placeholder'), []);
     return xmlShape;
   }
 }
