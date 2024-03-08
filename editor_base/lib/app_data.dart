@@ -31,7 +31,8 @@ class AppData with ChangeNotifier {
   Color? shapeSelectedFillColorTemp;
   Offset? shapeSelectedPositionTemp;
   Offset mouseToPolygonDifference = Offset.zero;
-  String? filePath;
+  String? saveFilePath;
+  String? exportFilePath;
 
   bool readyExample = false;
   late dynamic dataExample;
@@ -218,9 +219,9 @@ class AppData with ChangeNotifier {
   }
 
   Future<void> saveFile() async {
-    filePath ?? await pickSaveFile();
+    saveFilePath ?? await pickSaveFile();
 
-    File file = File(filePath!);
+    File file = File(saveFilePath!);
     List<Map<String, dynamic>> list =
         shapesList.map((shape) => shape.toMap()).toList();
     Map<String, dynamic> data = {'document': documentToMap(), 'shapes': list};
@@ -230,9 +231,16 @@ class AppData with ChangeNotifier {
   }
 
   Future<void> pickSaveFile() async {
-    filePath = await FilePicker.platform.saveFile(
+    saveFilePath = await FilePicker.platform.saveFile(
       dialogTitle: 'Please select an output file:',
       fileName: 'output-file.json',
+    );
+  }
+
+  Future<void> pickExportFile() async {
+    exportFilePath = await FilePicker.platform.saveFile(
+      dialogTitle: 'Please select an output file:',
+      fileName: 'output-file.svg',
     );
   }
 
@@ -240,13 +248,13 @@ class AppData with ChangeNotifier {
     FilePicker picker = FilePicker.platform;
     FilePickerResult? result =
         await picker.pickFiles(dialogTitle: 'file to load');
-    filePath = result!.files[0].path;
+    saveFilePath = result!.files[0].path;
   }
 
   Future<void> loadFile() async {
     await pickLoadFile();
 
-    File file = File(filePath!);
+    File file = File(saveFilePath!);
     Map<String, dynamic> data = jsonDecode(file.readAsStringSync());
 
     if (!data.containsKey('document')) {
@@ -273,11 +281,9 @@ class AppData with ChangeNotifier {
   }
 
   Future<void> exportFile() async {
-    if (filePath == null) {
-      await pickSaveFile();
-    }
+    exportFilePath ?? await pickExportFile();
 
-    File file = File(filePath!);
+    File file = File(exportFilePath!);
 
     var document = xml.XmlDocument(
       [
