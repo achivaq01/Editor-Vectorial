@@ -142,7 +142,7 @@ class Shape {
       );
     } else if (isRectangle) {
       xmlShape = xml.XmlElement(
-        xml.XmlName('rectangle'),
+        xml.XmlName('rect'),
         [
           xml.XmlAttribute(xml.XmlName('width'), width.toString()),
           xml.XmlAttribute(xml.XmlName('height'), height.toString()),
