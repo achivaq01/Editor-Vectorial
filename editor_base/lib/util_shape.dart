@@ -25,7 +25,7 @@ class Shape {
 
   bool closed = false;
   bool isEllipsed = false;
-  bool isDrawing = false;
+  bool isPath = false;
   bool isLine = false;
   bool isMultiline = false;
   bool isRectangle = false;
@@ -83,6 +83,7 @@ class Shape {
         'strokeColor': strokeColor.value,
         'fillColor': fillColor.value,
         'isEllipsed': isEllipsed,
+        'isPath': isPath,
         'isLine': isLine,
         'isMultiline': isMultiline,
         'isRectangle': isRectangle,
@@ -118,7 +119,28 @@ class Shape {
     xml.XmlElement? xmlShape;
     xmlShape ??= xml.XmlElement(xml.XmlName('placeholder'), []);
 
-    if (isLine) {
+    if (isPath) {
+      StringBuffer pathData = StringBuffer();
+      List<Offset> pathVertices =
+          vertices.map((vertex) => vertex + position).toList();
+
+      pathData.write('M${pathVertices.first.dx} ${pathVertices.first.dy} ');
+      for (int i = 1; i < pathVertices.length; i++) {
+        pathData.write('L${pathVertices[i].dx} ${pathVertices[i].dy} ');
+      }
+      if (closed) {
+        pathData.write('Z');
+      }
+
+      xmlShape = xml.XmlElement(
+        xml.XmlName('path'),
+        [
+          xml.XmlAttribute(xml.XmlName('d'), pathData.toString()),
+          xml.XmlAttribute(xml.XmlName('style'),
+              'fill:${colorToRgba(fillColor)};stroke:${colorToRgba(strokeColor)};stroke-width:$strokeWidth'),
+        ],
+      );
+    } else if (isLine) {
       xmlShape = xml.XmlElement(
         xml.XmlName('line'),
         [

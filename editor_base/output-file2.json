@@ -493,7 +493,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 1644136823,
-                "isEllipsed": false
+                "isEllipsed": false,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -1228,7 +1233,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 3405774847,
-                "isEllipsed": false
+                "isEllipsed": false,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -1507,7 +1517,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 3942351747,
-                "isEllipsed": false
+                "isEllipsed": false,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -2054,7 +2069,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 3690987519,
-                "isEllipsed": false
+                "isEllipsed": false,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -2077,7 +2097,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 3226576839,
-                "isEllipsed": true
+                "isEllipsed": true,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -2396,7 +2421,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 4160749567,
-                "isEllipsed": false
+                "isEllipsed": false,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -2419,7 +2449,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 4278190080,
-                "isEllipsed": true
+                "isEllipsed": true,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -2590,7 +2625,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 3254779903,
-                "isEllipsed": false
+                "isEllipsed": false,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -3537,7 +3577,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4294111729,
                 "fillColor": 4288620070,
-                "isEllipsed": false
+                "isEllipsed": false,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -3572,7 +3617,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 4294967295,
-                "isEllipsed": false
+                "isEllipsed": false,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -3663,7 +3713,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 4293506092,
-                "isEllipsed": false
+                "isEllipsed": false,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -4730,7 +4785,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 4294958300,
-                "isEllipsed": false
+                "isEllipsed": false,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -4781,7 +4841,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 4294950223,
-                "isEllipsed": false
+                "isEllipsed": false,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         },
         {
@@ -5644,7 +5709,12 @@
                 "strokeWidth": 1.0,
                 "strokeColor": 4278190080,
                 "fillColor": 4294967295,
-                "isEllipsed": false
+                "isEllipsed": false,
+                "isPath": false,
+                "isLine": false,
+                "isMultiline": false,
+                "isRectangle": false,
+                "isEllipsis": false
             }
         }
     ]

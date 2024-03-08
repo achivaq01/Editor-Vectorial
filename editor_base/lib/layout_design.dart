@@ -323,6 +323,7 @@ class LayoutDesignState extends State<LayoutDesign> {
                         _isMouseButtonPressed = false;
 
                         if (appData.toolSelected == "shape_drawing") {
+                          appData.newShape.isPath = true;
                           appData.addNewShapeToShapesList();
                         }
 
