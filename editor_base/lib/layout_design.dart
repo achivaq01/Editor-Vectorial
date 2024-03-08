@@ -268,8 +268,10 @@ class LayoutDesignState extends State<LayoutDesign> {
                               ? startPoint.dy
                               : endPoint.dy;
 
-                          appData.newShape.width = docPosition.dx;
-                          appData.newShape.height = docPosition.dy;
+                          appData.newShape.width =
+                              (endPoint.dx - startPoint.dx).abs();
+                          appData.newShape.height =
+                              (endPoint.dy - startPoint.dy).abs();
                           appData.newShape.left = left;
                           appData.newShape.top = top;
 
