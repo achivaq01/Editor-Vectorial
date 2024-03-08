@@ -122,10 +122,14 @@ class Shape {
       xmlShape = xml.XmlElement(
         xml.XmlName('line'),
         [
-          xml.XmlAttribute(xml.XmlName('x1'), initialPosition.dx.toString()),
-          xml.XmlAttribute(xml.XmlName('y1'), initialPosition.dy.toString()),
-          xml.XmlAttribute(xml.XmlName('x2'), finalPosition.dx.toString()),
-          xml.XmlAttribute(xml.XmlName('y2'), finalPosition.dy.toString()),
+          xml.XmlAttribute(
+              xml.XmlName('x1'), (initialPosition.dx + position.dx).toString()),
+          xml.XmlAttribute(
+              xml.XmlName('y1'), (initialPosition.dy + position.dy).toString()),
+          xml.XmlAttribute(
+              xml.XmlName('x2'), (finalPosition.dx + position.dx).toString()),
+          xml.XmlAttribute(
+              xml.XmlName('y2'), (finalPosition.dy + position.dy).toString()),
           xml.XmlAttribute(xml.XmlName('style'),
               'stroke:${colorToRgba(strokeColor)};stroke-width:$strokeWidth'),
         ],
@@ -134,8 +138,12 @@ class Shape {
       xmlShape = xml.XmlElement(
         xml.XmlName('polyline'),
         [
-          xml.XmlAttribute(xml.XmlName('points'),
-              vertices.map((vertex) => '${vertex.dx},${vertex.dy}').join(' ')),
+          xml.XmlAttribute(
+              xml.XmlName('points'),
+              vertices
+                  .map((vertex) =>
+                      '${vertex.dx + position.dx},${vertex.dy + position.dy}')
+                  .join(' ')),
           xml.XmlAttribute(xml.XmlName('style'),
               'fill:${colorToRgba(fillColor)};stroke:${colorToRgba(strokeColor)};stroke-width:$strokeWidth'),
         ],
@@ -146,8 +154,8 @@ class Shape {
         [
           xml.XmlAttribute(xml.XmlName('width'), width.toString()),
           xml.XmlAttribute(xml.XmlName('height'), height.toString()),
-          xml.XmlAttribute(xml.XmlName('x'), left.toString()),
-          xml.XmlAttribute(xml.XmlName('y'), top.toString()),
+          xml.XmlAttribute(xml.XmlName('x'), (left + position.dx).toString()),
+          xml.XmlAttribute(xml.XmlName('y'), (top + position.dy).toString()),
           xml.XmlAttribute(xml.XmlName('style'),
               'fill:${colorToRgba(fillColor)};stroke-width:$strokeWidth;stroke:${colorToRgba(strokeColor)}'),
         ],
@@ -158,13 +166,14 @@ class Shape {
         [
           xml.XmlAttribute(xml.XmlName('rx'), rx.toString()),
           xml.XmlAttribute(xml.XmlName('ry'), ry.toString()),
-          xml.XmlAttribute(xml.XmlName('cx'), cx.toString()),
-          xml.XmlAttribute(xml.XmlName('cy'), cy.toString()),
+          xml.XmlAttribute(xml.XmlName('cx'), (cx + position.dx).toString()),
+          xml.XmlAttribute(xml.XmlName('cy'), (cy + position.dy).toString()),
           xml.XmlAttribute(xml.XmlName('style'),
               'fill:${colorToRgba(fillColor)};stroke:${colorToRgba(strokeColor)};stroke-width:$strokeWidth'),
         ],
       );
     }
+
     return xmlShape;
   }
 }
