@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'app_click_selector.dart';
@@ -261,8 +262,10 @@ class AppData with ChangeNotifier {
       return;
     }
 
-    docSize = Size(data['document']['document_width'],
-        data['document']['document_height']);
+    docSize = Size(
+      data['document']['document_width'] ?? 500.0,
+      data['document']['document_height'] ?? 400.0,
+    );
 
     if (!data.containsKey('shapes')) {
       return;
@@ -275,6 +278,28 @@ class AppData with ChangeNotifier {
     for (Map<String, dynamic> shapeData in shapesData) {
       Shape shape = Shape.fromMap(shapeData);
       shapesList.add(shape);
+    }
+
+    for (Shape shape in shapesList) {
+      if (kDebugMode) {
+        print("Shape $shape\n");
+      }
+      if (kDebugMode) {
+        print("The shape is a Path? ${shape.isPath}");
+      }
+      if (kDebugMode) {
+        print("The shape is a Line? ${shape.isLine}");
+      }
+      if (kDebugMode) {
+        print("The shape is a Multiline? ${shape.isMultiline}");
+      }
+      if (kDebugMode) {
+        print("The shape is a Rectangle? ${shape.isRectangle}");
+      }
+      if (kDebugMode) {
+        print(
+            "The shape is an Ellipsis? ${shape.isEllipsis}\n\n****************************************\n");
+      }
     }
 
     notifyListeners();

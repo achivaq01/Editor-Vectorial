@@ -45,6 +45,38 @@ class Shape {
     position = newPosition;
   }
 
+  void setWidth(double newWidth) {
+    width = newWidth;
+  }
+
+  void setHeight(double newHeight) {
+    height = newHeight;
+  }
+
+  void setLeft(double newLeft) {
+    left = newLeft;
+  }
+
+  void setTop(double newTop) {
+    top = newTop;
+  }
+
+  void setRx(double newRx) {
+    rx = newRx;
+  }
+
+  void setRy(double newRy) {
+    ry = newRy;
+  }
+
+  void setCx(double newCx) {
+    cx = newCx;
+  }
+
+  void setCy(double newCy) {
+    cy = newCy;
+  }
+
   void setStrokeWidth(double width) {
     strokeWidth = width;
   }
@@ -77,7 +109,17 @@ class Shape {
     return {
       'type': 'shape_drawing',
       'object': {
+        'initialPosition': {'dx': initialPosition.dx, 'dy': initialPosition.dy},
+        'finalPosition': {'dx': finalPosition.dx, 'dy': finalPosition.dy},
         'position': {'dx': position.dx, 'dy': position.dy},
+        'width': width,
+        'height': height,
+        'left': left,
+        'top': top,
+        'rx': rx,
+        'ry': ry,
+        'cx': cx,
+        'cy': cy,
         'vertices': vertices.map((v) => {'dx': v.dx, 'dy': v.dy}).toList(),
         'strokeWidth': strokeWidth,
         'strokeColor': strokeColor.value,
@@ -99,12 +141,29 @@ class Shape {
 
     var objectMap = map['object'] as Map<String, dynamic>;
     var shape = Shape()
+      ..setInitialPosition(Offset(objectMap['initialPosition']['dx'],
+          objectMap['initialPosition']['dy']))
+      ..setFinalPosition(Offset(
+          objectMap['finalPosition']['dx'], objectMap['finalPosition']['dy']))
       ..setPosition(
           Offset(objectMap['position']['dx'], objectMap['position']['dy']))
+      ..setWidth(objectMap['width'])
+      ..setHeight(objectMap['height'])
+      ..setLeft(objectMap['left'])
+      ..setTop(objectMap['top'])
+      ..setRx(objectMap['rx'])
+      ..setRy(objectMap['ry'])
+      ..setCx(objectMap['cx'])
+      ..setCy(objectMap['cy'])
       ..setStrokeWidth(objectMap['strokeWidth'])
       ..setStrokeColor(Color(objectMap['strokeColor']))
       ..setFillColor(Color(objectMap['fillColor']))
-      ..isEllipsed = (objectMap['isEllipsed']);
+      ..isEllipsed = (objectMap['isEllipsed'])
+      ..isPath = (objectMap['isPath'])
+      ..isLine = (objectMap['isLine'])
+      ..isMultiline = (objectMap['isMultiline'])
+      ..isRectangle = (objectMap['isRectangle'])
+      ..isEllipsis = (objectMap['isEllipsis']);
 
     if (objectMap['vertices'] != null) {
       var verticesList = objectMap['vertices'] as List;
