@@ -236,6 +236,7 @@ class AppData with ChangeNotifier {
       dialogTitle: 'Please select an output file:',
       fileName: 'output-file.json',
     );
+    notifyListeners();
   }
 
   Future<void> pickExportFile() async {

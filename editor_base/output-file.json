@@ -1,0 +1,53 @@
+{
+ "document": {
+  "document_height": 400.0,
+  "document_width": 500.0,
+  "document_color": 4294967295
+ },
+ "shapes": [
+  {
+   "type": "shape_drawing",
+   "object": {
+    "initialPosition": {
+     "dx": 0.0,
+     "dy": 0.0
+    },
+    "finalPosition": {
+     "dx": 0.0,
+     "dy": 0.0
+    },
+    "position": {
+     "dx": 0.0,
+     "dy": 0.0
+    },
+    "width": 0.0,
+    "height": 0.0,
+    "left": 0.0,
+    "top": 0.0,
+    "rx": 133.8918585526316,
+    "ry": 67.30263157894737,
+    "cx": 239.0686677631579,
+    "cy": 175.83881578947367,
+    "vertices": [
+     {
+      "dx": 105.1768092105263,
+      "dy": 108.5361842105263
+     },
+     {
+      "dx": 372.9605263157895,
+      "dy": 243.14144736842104
+     }
+    ],
+    "strokeWidth": 1.0,
+    "strokeColor": 4278190080,
+    "fillColor": 0,
+    "isEllipsed": true,
+    "isPath": false,
+    "isLine": false,
+    "isMultiline": false,
+    "isRectangle": false,
+    "isEllipsis": true
+   }
+  }
+ ]
+}

@@ -152,7 +152,7 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
                 onPressed: () {
                   appData.saveFile();
                 },
-                child: const Text('Save as / Save'),
+                child: Text(appData.saveFilePath != null ? 'Save' : 'Save as'),
               ),
               CDKButton(
                 onPressed: () {
